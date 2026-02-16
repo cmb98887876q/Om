@@ -18,69 +18,61 @@
         :root {
             --primary: #4f46e5;
             --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-            --surface: rgba(255, 255, 255, 0.65);
-            --glass-border: 1px solid rgba(255, 255, 255, 0.6);
+            --surface: #ffffff;
+            --glass-border: 1px solid #e2e8f0; 
             --text-dark: #0f172a;
             --text-gray: #475569;
             --success: #10b981;
             --danger: #ef4444;
             --warning: #f59e0b;
             --info: #3b82f6;
-            --shadow-card: 0 10px 30px -10px rgba(79, 70, 229, 0.15);
+            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.05);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; user-select: none; }
 
         body { 
             margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-dark); 
-            height: 100dvh; overflow: hidden; background-color: #eef2ff;
+            height: 100dvh; overflow: hidden; 
+            background-color: #ffffff;
         }
-
-        /* --- BACKGROUND --- */
-        .background-mesh {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
-            background: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
-                        radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
-                        radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
-            background-color: #e0e7ff;
-        }
-        .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.6; animation: floatOrb 20s infinite alternate; }
-        .orb-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #c7d2fe; }
-        .orb-2 { bottom: -10%; right: -10%; width: 50vw; height: 50vw; background: #fbcfe8; }
-        @keyframes floatOrb { 0% { transform: translate(0, 0); } 100% { transform: translate(30px, -50px); } }
 
         /* --- HEADER --- */
         .app-header {
             padding: 15px 24px; display: flex; justify-content: space-between; align-items: center;
             height: 80px; width: 100%; max-width: 1000px; margin: 0 auto;
+            background: #ffffff;
+            z-index: 10; position: relative;
         }
         .header-left-group { display: flex; align-items: center; gap: 16px; }
         .nav-btn {
-            width: 44px; height: 44px; background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(10px);
-            border: var(--glass-border); border-radius: 14px; display: flex; align-items: center; justify-content: center;
-            color: var(--text-dark); font-size: 1.1rem; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            width: 44px; height: 44px; background: #f8fafc;
+            border: 1px solid #e2e8f0; border-radius: 14px; display: flex; align-items: center; justify-content: center;
+            color: var(--text-dark); font-size: 1.1rem; cursor: pointer; transition: 0.2s;
         }
+        .nav-btn:active { background: #e2e8f0; }
+        
         .brand-title { font-size: 1.6rem; font-weight: 800; margin: 0; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .brand-subtitle { font-size: 0.75rem; color: var(--text-gray); font-weight: 600; text-transform: uppercase; }
         
         .profile-btn {
-            background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); padding: 6px 6px 6px 16px; 
-            border-radius: 50px; display: flex; align-items: center; gap: 12px; border: var(--glass-border); cursor: pointer;
+            background: #f8fafc; padding: 6px 6px 6px 16px; 
+            border-radius: 50px; display: flex; align-items: center; gap: 12px; border: 1px solid #e2e8f0; cursor: pointer;
         }
-        .profile-img { width: 38px; height: 38px; border-radius: 50%; border: 2px solid white; object-fit: cover; }
+        .profile-img { width: 38px; height: 38px; border-radius: 50%; border: 2px solid white; object-fit: cover; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 
         /* --- DASHBOARD --- */
-        #topicScreen { height: calc(100vh - 80px); overflow-y: auto; padding: 10px 24px 100px; max-width: 1000px; margin: 0 auto; }
+        #topicScreen { height: calc(100vh - 80px); overflow-y: auto; padding: 10px 24px 100px; max-width: 1000px; margin: 0 auto; background: #ffffff; }
         .hero-title { font-size: 2rem; font-weight: 800; color: var(--text-dark); margin: 20px 0 5px; }
         .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
         
         .card {
-            background: var(--surface); backdrop-filter: blur(20px); border: var(--glass-border); border-radius: 28px; padding: 20px;
+            background: white; border: 1px solid #f1f5f9; border-radius: 28px; padding: 20px;
             display: flex; align-items: center; gap: 20px; box-shadow: var(--shadow-card); cursor: pointer; transition: 0.3s;
             position: relative; overflow: hidden;
         }
-        .card:active { transform: scale(0.96); }
-        .card-icon { width: 64px; height: 64px; border-radius: 20px; background: white; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: var(--primary); box-shadow: 0 8px 20px rgba(79, 70, 229, 0.15); flex-shrink: 0; }
+        .card:active { transform: scale(0.96); background: #f8fafc; }
+        .card-icon { width: 64px; height: 64px; border-radius: 20px; background: #f8fafc; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: var(--primary); flex-shrink: 0; }
         .card-info h3 { margin: 0; font-size: 1.1rem; font-weight: 700; }
         .card-info span { font-size: 0.85rem; color: var(--text-gray); }
 
@@ -88,38 +80,46 @@
             position: absolute; top: 15px; right: 15px; background: #dcfce7; color: #166534; font-weight: 800;
             font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; border: 1px solid #bbf7d0; display: none;
         }
-        .card.completed { border: 2px solid var(--success); background: rgba(255,255,255,0.9); }
+        .card.completed { border: 2px solid var(--success); background: #f0fdf4; }
         .card.completed .card-score { display: block; }
         .card.completed .card-action { background: var(--success); }
         .card-action { width: 36px; height: 36px; border-radius: 50%; background: var(--primary-gradient); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; margin-left: auto; }
 
         /* --- QUIZ UI --- */
-        #quizInterface { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at top, #eef2ff, #f8fafc); z-index: 100; display: none; flex-direction: column; }
-        .quiz-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.8); backdrop-filter: blur(15px); }
+        #quizInterface { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 100; display: none; flex-direction: column; }
+        .quiz-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; background: #ffffff; border-bottom: 1px solid #f1f5f9; }
         .timer-badge { background: white; padding: 8px 16px; border-radius: 30px; font-weight: 700; display: flex; align-items: center; gap: 8px; border: 1px solid #e2e8f0; }
         .progress-fill { height: 4px; background: var(--primary-gradient); width: 0%; transition: width 0.5s ease; }
-        .quiz-scroll { flex: 1; overflow-y: auto; padding: 30px 24px; max-width: 800px; margin: 0 auto; }
-        .q-text { font-size: 1.5rem; font-weight: 800; color: var(--text-dark); margin: 0 0 30px; }
+        .quiz-scroll { flex: 1; overflow-y: auto; padding: 30px 24px; max-width: 800px; margin: 0 auto; background: #ffffff; }
         
-        .option-btn { background: white; padding: 20px; border-radius: 20px; margin-bottom: 16px; cursor: pointer; display: flex; align-items: center; gap: 16px; border: 2px solid transparent; box-shadow: 0 4px 6px -2px rgba(0,0,0,0.03); transition: 0.2s; }
-        .option-btn:active { transform: scale(0.98); }
-        .opt-char { width: 40px; height: 40px; background: #f1f5f9; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        /* NEW IMAGE STYLES */
+        .q-image-container { text-align: center; margin-bottom: 20px; display: none; }
+        .q-image-img { max-width: 100%; height: auto; max-height: 250px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: var(--shadow-card); }
+        
+        .q-text { font-size: 1.3rem; font-weight: 800; color: var(--text-dark); margin: 0 0 30px; line-height: 1.4; }
+        
+        .option-btn { background: white; padding: 15px 20px; border-radius: 20px; margin-bottom: 16px; cursor: pointer; display: flex; align-items: center; gap: 16px; border: 2px solid #f1f5f9; box-shadow: 0 4px 6px -2px rgba(0,0,0,0.03); transition: 0.2s; }
+        .option-btn:active { transform: scale(0.98); background: #f8fafc; }
+        .opt-char { width: 40px; height: 40px; background: #f1f5f9; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+        
+        /* ANSWER IMAGE STYLE */
+        .opt-image-preview { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; border: 1px solid #e2e8f0; }
         
         .option-btn.correct { border-color: var(--success); background: #f0fdf4; }
         .option-btn.correct .opt-char { background: var(--success); color: white; }
         .option-btn.wrong { border-color: var(--danger); background: #fef2f2; }
         .option-btn.wrong .opt-char { background: var(--danger); color: white; }
         
-        .quiz-footer { padding: 20px; background: white; display: flex; justify-content: flex-end; }
+        .quiz-footer { padding: 20px; background: white; display: flex; justify-content: flex-end; border-top: 1px solid #f1f5f9; }
         .primary-btn { background: var(--text-dark); color: white; border: none; padding: 16px 32px; border-radius: 16px; font-weight: 700; width: 100%; }
 
         /* --- RESULT UI --- */
-        #resultView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--surface-hover); z-index: 200; backdrop-filter: blur(20px); overflow-y: auto; }
+        #resultView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 200; overflow-y: auto; }
         .result-wrapper { min-height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
         
         .result-card {
             background: white; width: 100%; max-width: 420px; border-radius: 32px; overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); border: 4px solid white;
+            box-shadow: var(--shadow-card); border: 1px solid #f1f5f9;
             text-align: center; margin-bottom: 30px; position: relative;
         }
         .res-top { height: 140px; background: var(--primary-gradient); display: flex; justify-content: center; align-items: center; }
@@ -141,8 +141,8 @@
         .stat-box.orange { background: #fff7ed; color: var(--warning); }
 
         .action-row { width: 100%; max-width: 420px; display: flex; gap: 15px; }
-        .btn-glass { flex: 1; padding: 18px; border-radius: 18px; border: 1px solid rgba(0,0,0,0.1); background: white; font-weight: 700; }
-        .btn-fill { flex: 1; padding: 18px; border-radius: 18px; border: none; background: var(--text-dark); color: white; font-weight: 700; display: flex; justify-content: center; align-items: center; gap: 8px; }
+        .btn-glass { flex: 1; padding: 18px; border-radius: 18px; border: 1px solid #e2e8f0; background: white; font-weight: 700; color: var(--text-dark); cursor: pointer; }
+        .btn-fill { flex: 1; padding: 18px; border-radius: 18px; border: none; background: var(--text-dark); color: white; font-weight: 700; display: flex; justify-content: center; align-items: center; gap: 8px; cursor: pointer; }
 
         .fade-in { animation: fadeIn 0.5s ease backwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
@@ -151,15 +151,10 @@
 </head>
 <body oncontextmenu="return false;">
 
-    <div class="background-mesh">
-        <div class="orb orb-1"></div><div class="orb orb-2"></div>
-    </div>
-
     <!-- 1. TOPIC SCREEN -->
     <div id="topicScreen">
         <header class="app-header fade-in">
             <div class="header-left-group">
-                <!-- FIXED BACK BUTTON: Uses window.history.back() now -->
                 <button class="nav-btn" onclick="window.history.back()"><i class="fa-solid fa-chevron-left"></i></button>
                 <div class="brand-container">
                     <span class="brand-subtitle">Mock Test Series</span>
@@ -185,13 +180,18 @@
     <div id="quizInterface">
         <div class="quiz-header">
             <div class="timer-badge" id="timerContainer"><i class="fa-regular fa-clock"></i> <span id="timerText">60s</span></div>
-            <!-- FIXED EXIT BUTTON -->
             <i class="fa-solid fa-xmark" style="font-size:1.5rem; padding:10px; cursor:pointer; color:var(--text-gray)" onclick="confirmExit()"></i>
         </div>
         <div style="height:4px; background:#e2e8f0"><div class="progress-fill" id="progressBar"></div></div>
         
         <div class="quiz-scroll">
             <div style="color:var(--primary); font-weight:800; font-size:0.8rem; margin-bottom:10px">QUESTION <span id="qIndex">1</span></div>
+            
+            <!-- QUESTION IMAGE HOLDER -->
+            <div id="qImageContainer" class="q-image-container">
+                <img id="qImage" src="" class="q-image-img">
+            </div>
+
             <div class="q-text" id="qText">Loading...</div>
             <div id="optionsList"></div>
         </div>
@@ -241,8 +241,7 @@
             </div>
 
             <div class="action-row fade-in" style="animation-delay: 0.2s">
-                <!-- FIXED HOME BUTTON: Uses returnToHome() which now checks if exam is finished -->
-                <button class="btn-glass" onclick="returnToHome()"><i class="fa-solid fa-house"></i> Home</button>
+                <button class="btn-glass" onclick="returnToHome()"><i class="fa-solid fa-house"></i> Topics</button>
                 <button class="btn-fill" onclick="shareResult()"><i class="fa-solid fa-share-nodes"></i> Share</button>
             </div>
         </div>
@@ -254,13 +253,49 @@
         const pic = localStorage.getItem('iti_student_pic') || "https://ui-avatars.com/api/?name=Alex+Smith&background=4f46e5&color=fff";
         let savedScores = JSON.parse(localStorage.getItem('iti_scores')) || {};
 
+        // --- QUESTION BANK WITH IMAGES ---
         const defaultQBank = {
-            "safety": [{t:"Color of CO2 Extinguisher?", o:["Blue","Black","Red","Yellow"], a:1}, {t:"Extinguisher for electrical fire?", o:["Foam","Water","Halon","Soda Acid"], a:2}],
-            "tools": [{t:"Material for screwdriver blades?", o:["Cast Iron","Mild Steel","Carbon Steel","Copper"], a:2}, {t:"Tool to remove insulation?", o:["Stripper","Knife","Plier","Chisel"], a:0}],
-            "circuits": [{t:"Unit of Frequency?", o:["Hertz","Volt","Amp","Ohm"], a:0}],
-            "magnet": [{t:"Paramagnetic material?", o:["Iron","Wood","Aluminum","Nickel"], a:2}],
-            "measure": [{t:"Instrument for resistance?", o:["Ammeter","Voltmeter","Ohmmeter","Wattmeter"], a:2}],
-            "motor": [{t:"Which part rotates in DC motor?", o:["Stator","Armature","Yoke","Brushes"], a:1}]
+            "safety": [
+                {t:"Color of CO2 Extinguisher?", o:["Blue","Black","Red","Yellow"], a:1}, 
+                // IMAGE QUESTION EXAMPLE
+                {
+                    t:"Identify this safety sign?", 
+                    qImg: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Warnung_vor_elektrischer_Spannung_D-W008.svg/1200px-Warnung_vor_elektrischer_Spannung_D-W008.svg.png", 
+                    o:["Danger Electric","No Entry","Wet Floor","Fire Hazard"], 
+                    a:0
+                },
+                {t:"Extinguisher for electrical fire?", o:["Foam","Water","Halon","Soda Acid"], a:2}
+            ],
+            "tools": [
+                {t:"Material for screwdriver blades?", o:["Cast Iron","Mild Steel","Carbon Steel","Copper"], a:2}, 
+                
+                // IMAGE ANSWER EXAMPLE
+                {
+                    t:"Which one is the Combination Plier?",
+                    o:["A", "B", "C", "D"], // Text labels
+                    oImg: [
+                        "https://m.media-amazon.com/images/I/61N+x-L3LJL.jpg", // A (Hammer)
+                        "https://m.media-amazon.com/images/I/71rI0Y2fRIL._AC_UF1000,1000_QL80_.jpg", // B (Plier)
+                        "https://m.media-amazon.com/images/I/61e6+xW+4UL._AC_UF1000,1000_QL80_.jpg", // C (Wrench)
+                        "https://5.imimg.com/data5/SELLER/Default/2022/10/XN/QJ/OY/5436660/screw-driver-500x500.jpg" // D (Screwdriver)
+                    ],
+                    a: 1 // B is correct
+                }
+            ],
+            "circuits": [
+                {t:"Unit of Frequency?", o:["Hertz","Volt","Amp","Ohm"], a:0},
+                {t:"Power formula in DC?", o:["V x I","V / I","I / R","V x R"], a:0}
+            ],
+            "magnet": [
+                {t:"Paramagnetic material?", o:["Iron","Wood","Aluminum","Nickel"], a:2},
+                {t:"Like poles of magnet?", o:["Attract","Repel","Neutral","None"], a:1}
+            ],
+            "measure": [
+                {t:"Instrument for resistance?", o:["Ammeter","Voltmeter","Ohmmeter","Wattmeter"], a:2}
+            ],
+            "motor": [
+                {t:"Which part rotates in DC motor?", o:["Stator","Armature","Yoke","Brushes"], a:1}
+            ]
         };
 
         const topics = [ 
@@ -299,7 +334,7 @@
                 
                 grid.innerHTML += `
                 <div class="${cardClass} fade-in" style="animation-delay:${i*0.1}s" onclick="startQuiz('${t.id}')">
-                    <div class="card-score">High Score: ${topicScore}%</div>
+                    <div class="card-score">Last Score: ${topicScore}%</div>
                     <div class="card-icon" style="color:${t.color}"><i class="fa-solid ${t.icon}"></i></div>
                     <div class="card-info"><h3>${t.name}</h3><span>${c} Questions</span></div>
                     <div class="card-action">${iconHtml}</div>
@@ -318,8 +353,12 @@
         function startQuiz(id) {
             currentTopicId = id; 
             if(!qBank[id] || qBank[id].length===0) { qBank[id] = defaultQBank[id] || []; }
+            
             if(qBank[id].length > 0) {
-                activeQs = qBank[id]; curr = 0; score = 0;
+                // Shuffle Logic with Images
+                activeQs = [...qBank[id]].sort(() => Math.random() - 0.5);
+                
+                curr = 0; score = 0;
                 quizStartTime = Date.now();
                 document.getElementById('topicScreen').style.display = 'none';
                 document.getElementById('resultView').style.display = 'none'; 
@@ -341,17 +380,45 @@
             const q = activeQs[curr];
             document.getElementById('qIndex').innerText = `${curr + 1}/${activeQs.length}`;
             document.getElementById('qText').innerText = q.t;
+            
+            // --- 1. HANDLE QUESTION IMAGE ---
+            const qImgDiv = document.getElementById('qImageContainer');
+            const qImgEl = document.getElementById('qImage');
+            if(q.qImg) {
+                qImgEl.src = q.qImg;
+                qImgDiv.style.display = 'block';
+            } else {
+                qImgDiv.style.display = 'none';
+            }
+            // --------------------------------
+
             setTimeout(()=>document.getElementById('progressBar').style.width = `${((curr)/activeQs.length)*100}%`, 50);
 
-            // Shuffle
-            let shuffledOptions = q.o.map((text, originalIndex) => { return { text: text, originalIndex: originalIndex }; });
+            // --- 2. PREPARE OPTIONS (TEXT + OPTIONAL IMAGE) ---
+            let shuffledOptions = q.o.map((text, idx) => { 
+                return { 
+                    text: text, 
+                    originalIndex: idx,
+                    // Check if this option has a corresponding image
+                    img: (q.oImg && q.oImg[idx]) ? q.oImg[idx] : null 
+                }; 
+            });
+            
+            // Shuffle them
             shuffledOptions.sort(() => Math.random() - 0.5);
 
             const list = document.getElementById('optionsList'); list.innerHTML = '';
+            
             shuffledOptions.forEach((item, visualIndex) => {
                 if (item.originalIndex === q.a) correctVisualIndex = visualIndex;
+                
+                // Construct HTML: Add image tag if image exists
+                let imgHtml = item.img ? `<img src="${item.img}" class="opt-image-preview">` : '';
+
                 list.innerHTML += `<div class="option-btn fade-in" style="animation-delay:${visualIndex*0.05}s" onclick="check(this,${visualIndex})">
-                    <div class="opt-char">${String.fromCharCode(65+visualIndex)}</div><div>${item.text}</div>
+                    <div class="opt-char">${String.fromCharCode(65+visualIndex)}</div>
+                    ${imgHtml}
+                    <div>${item.text}</div>
                 </div>`;
             });
 
@@ -400,11 +467,8 @@
             document.getElementById('resultView').style.display = 'block';
 
             let finalScore = Math.round((score/activeQs.length)*100);
-            let oldScore = savedScores[currentTopicId] || 0;
-            if(finalScore >= oldScore) {
-                savedScores[currentTopicId] = finalScore;
-                localStorage.setItem('iti_scores', JSON.stringify(savedScores));
-            }
+            savedScores[currentTopicId] = finalScore;
+            localStorage.setItem('iti_scores', JSON.stringify(savedScores));
 
             let temp = 0;
             let int = setInterval(() => { if(temp>=finalScore) clearInterval(int); else temp++; document.getElementById('resScore').innerText = temp + "%"; }, 15);
@@ -422,19 +486,12 @@
             if(window.confetti) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
         }
 
-        // --- FIXED RETURN LOGIC ---
         function returnToHome() {
             clearInterval(timer);
-            // If we are on the result page, going back means returning to Dashboard
-            if(document.getElementById('resultView').style.display === 'block') {
-                window.history.back();
-            } else {
-                // If exiting mid-quiz, go back to topic selection
-                document.getElementById('quizInterface').style.display = 'none';
-                document.getElementById('resultView').style.display = 'none';
-                document.getElementById('topicScreen').style.display = 'block';
-                renderTopics(); 
-            }
+            document.getElementById('quizInterface').style.display = 'none';
+            document.getElementById('resultView').style.display = 'none';
+            document.getElementById('topicScreen').style.display = 'block';
+            renderTopics(); 
         }
 
         function confirmExit(){ 
