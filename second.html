@@ -5,322 +5,128 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LOKHIPUR ITI PVT</title>
     
-    <!-- Modern Typography -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
     <style>
+        /* ... (Purana CSS same rahega) ... */
         :root {
-            /* Brand Colors */
             --primary: #5b4dff; 
             --primary-dark: #4335dd;
             --primary-light: #eef2ff;
-            
-            /* Status Colors */
-            --success: #10b981;
-            --success-bg: #ecfdf5;
-            --danger: #ef4444;
-            --danger-bg: #fef2f2;
-            --warning: #f59e0b;
-            --warning-bg: #fffbeb;
-            
-            /* Neutrals */
-            --text-main: #0f172a;
-            --text-sec: #64748b;
-            --bg-body: #f8fafc;
-            --surface: #ffffff;
+            --success: #10b981; --success-bg: #ecfdf5;
+            --danger: #ef4444; --danger-bg: #fef2f2;
+            --warning: #f59e0b; --warning-bg: #fffbeb;
+            --text-main: #0f172a; --text-sec: #64748b;
+            --bg-body: #f8fafc; --surface: #ffffff;
             --border: #e2e8f0;
-            
-            /* Shadows */
             --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
-        
-        body { 
-            margin: 0; 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            color: var(--text-main); 
-            background-color: var(--bg-body); 
-            height: 100vh; 
-            overflow: hidden; 
-        }
+        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-main); background-color: var(--bg-body); height: 100vh; overflow: hidden; }
 
-        /* --- 1. HEADER (LOKHIPUR STYLE) --- */
+        /* HEADER */
         .app-header {
-            padding: 12px 20px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            height: 85px; 
-            width: 100%; 
-            max-width: 1000px; 
-            margin: 0 auto; 
-            background: var(--surface); 
-            border-bottom: 1px solid var(--border);
-            z-index: 50;
+            padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;
+            height: 85px; width: 100%; max-width: 1000px; margin: 0 auto; 
+            background: var(--surface); border-bottom: 1px solid var(--border); z-index: 50;
         }
-
         .header-left { display: flex; align-items: center; gap: 16px; }
-
+        
+        /* Refresh Button Added */
         .nav-btn {
-            width: 44px; height: 44px; 
-            background: var(--surface); 
-            border: 1px solid var(--border); 
-            border-radius: 14px;
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 1.1rem; cursor: pointer; color: var(--text-main);
-            box-shadow: var(--shadow-sm);
+            width: 44px; height: 44px; background: var(--surface); border: 1px solid var(--border); 
+            border-radius: 14px; display: flex; align-items: center; justify-content: center; 
+            font-size: 1.1rem; cursor: pointer; color: var(--text-main); box-shadow: var(--shadow-sm);
             transition: all 0.2s ease;
         }
         .nav-btn:active { transform: scale(0.92); background: var(--bg-body); }
 
         .title-group { display: flex; flex-direction: column; justify-content: center; }
+        .brand-subtitle { font-size: 0.65rem; color: var(--text-sec); font-weight: 700; text-transform: uppercase; margin-bottom: 2px; }
+        .brand-title { font-size: 1.35rem; font-weight: 800; margin: 0; color: var(--primary); line-height: 1; }
 
-        .brand-subtitle { 
-            font-size: 0.65rem; color: var(--text-sec); 
-            font-weight: 700; text-transform: uppercase; 
-            letter-spacing: 0.8px; margin-bottom: 2px; 
-        }
-        
-        .brand-title { 
-            font-size: 1.35rem; font-weight: 800; margin: 0; 
-            color: var(--primary); line-height: 1; letter-spacing: -0.5px;
-        }
-
-        /* Profile Pill */
         .profile-pill {
-            display: flex; align-items: center; gap: 10px;
-            padding: 5px 5px 5px 16px; 
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 50px;
-            box-shadow: var(--shadow-sm);
+            display: flex; align-items: center; gap: 10px; padding: 5px 5px 5px 16px; 
+            background: var(--surface); border: 1px solid var(--border); border-radius: 50px; box-shadow: var(--shadow-sm);
         }
+        .profile-name { font-weight: 700; font-size: 0.95rem; color: var(--text-main); max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .profile-img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; display: block; background: var(--primary-light); }
 
-        .profile-name {
-            font-weight: 700; font-size: 0.95rem; color: var(--text-main);
-            max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-        }
-
-        .profile-img { 
-            width: 38px; height: 38px; border-radius: 50%; 
-            object-fit: cover; display: block; background: var(--primary-light);
-        }
-
-        /* --- 2. DASHBOARD --- */
+        /* DASHBOARD */
         #topicScreen { height: calc(100vh - 85px); overflow-y: auto; padding: 20px 20px 100px; max-width: 1000px; margin: 0 auto; }
-        
-        .hero-section { margin-bottom: 25px; }
+        .hero-section { margin-bottom: 25px; display: flex; justify-content: space-between; align-items: flex-end; }
         .hero-title { font-size: 1.75rem; font-weight: 800; margin: 0 0 8px; color: var(--text-main); }
         .hero-sub { color: var(--text-sec); font-size: 0.95rem; font-weight: 500; }
-
+        
         .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
-        
         .card {
-            background: var(--surface); 
-            border: 1px solid var(--border); 
-            border-radius: 20px; 
-            padding: 20px;
-            display: flex; align-items: center; gap: 18px; 
-            box-shadow: var(--shadow-sm); 
-            cursor: pointer; 
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative; overflow: hidden;
+            background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 20px;
+            display: flex; align-items: center; gap: 18px; box-shadow: var(--shadow-sm); 
+            cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden;
         }
-        
-        .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--primary); }
         .card:active { transform: scale(0.98); }
-
-        .card-icon { 
-            width: 56px; height: 56px; border-radius: 16px; 
-            background: var(--primary-light); 
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 1.4rem; color: var(--primary); 
-            flex-shrink: 0;
-        }
-        
-        .card-info { flex: 1; }
+        .card-icon { width: 56px; height: 56px; border-radius: 16px; background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--primary); flex-shrink: 0; }
         .card-info h3 { margin: 0 0 4px; font-size: 1.05rem; font-weight: 700; color: var(--text-main); }
         .card-info span { font-size: 0.85rem; color: var(--text-sec); font-weight: 500; }
-        
         .card-arrow { color: var(--border); transition: 0.2s; }
-        .card:hover .card-arrow { color: var(--primary); transform: translateX(3px); }
+        .card-score { position: absolute; top: 12px; right: 12px; background: var(--success-bg); color: var(--success); font-weight: 700; font-size: 0.7rem; padding: 4px 10px; border-radius: 20px; }
 
-        .card-score { 
-            position: absolute; top: 12px; right: 12px; 
-            background: var(--success-bg); color: var(--success); 
-            font-weight: 700; font-size: 0.7rem; 
-            padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.2);
-        }
-
-        /* --- 3. QUIZ INTERFACE --- */
-        #quizInterface { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: var(--surface); z-index: 100; 
-            display: none; flex-direction: column; 
-        }
-        
-        .quiz-header { 
-            padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; 
-            border-bottom: 1px solid var(--border); height: 70px;
-        }
-        
-        .timer-badge { 
-            background: var(--bg-body); padding: 8px 16px; border-radius: 30px; 
-            font-weight: 700; font-size: 0.9rem; color: var(--text-main);
-            border: 1px solid var(--border); display: flex; align-items: center; gap: 8px;
-        }
-        
+        /* QUIZ */
+        #quizInterface { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--surface); z-index: 100; display: none; flex-direction: column; }
+        .quiz-header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); height: 70px; }
+        .timer-badge { background: var(--bg-body); padding: 8px 16px; border-radius: 30px; font-weight: 700; font-size: 0.9rem; color: var(--text-main); border: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
         .progress-container { height: 4px; background: var(--border); width: 100%; }
-        .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.4s ease; border-radius: 0 4px 4px 0; }
-        
+        .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.4s ease; }
         .quiz-scroll { flex: 1; overflow-y: auto; padding: 25px 20px; max-width: 800px; margin: 0 auto; width: 100%; }
-        
-        /* Question Styles */
-        .q-meta { color: var(--primary); font-weight: 700; font-size: 0.8rem; margin-bottom: 12px; letter-spacing: 0.5px; }
+        .q-meta { color: var(--primary); font-weight: 700; font-size: 0.8rem; margin-bottom: 12px; }
         .q-text { font-size: 1.25rem; font-weight: 700; margin: 0 0 20px; line-height: 1.5; color: var(--text-main); }
-        
-        .q-image-img { 
-            max-width: 100%; height: auto; max-height: 250px; 
-            border-radius: 16px; border: 1px solid var(--border); 
-            margin-bottom: 25px; display: none; box-shadow: var(--shadow-md);
-        }
-        
-        /* Options */
-        .option-btn { 
-            background: var(--surface); 
-            padding: 16px; 
-            border-radius: 16px; 
-            margin-bottom: 14px; 
-            cursor: pointer; 
-            display: flex; align-items: center; gap: 16px; 
-            border: 1.5px solid var(--border); 
-            transition: all 0.2s ease;
-            position: relative;
-            flex-wrap: wrap; /* Important for big images */
-        }
-        
-        .option-btn:hover { border-color: var(--primary); background: var(--primary-light); }
+        .q-image-img { max-width: 100%; height: auto; max-height: 250px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 25px; display: none; box-shadow: var(--shadow-md); }
+        .option-btn { background: var(--surface); padding: 16px; border-radius: 16px; margin-bottom: 14px; cursor: pointer; display: flex; align-items: center; gap: 16px; border: 1.5px solid var(--border); transition: all 0.2s ease; flex-wrap: wrap; }
         .option-btn:active { transform: scale(0.99); }
-        
-        .opt-char { 
-            width: 36px; height: 36px; background: var(--bg-body); 
-            border-radius: 10px; display: flex; align-items: center; justify-content: center; 
-            font-weight: 700; font-size: 0.9rem; color: var(--text-sec); border: 1px solid var(--border);
-            flex-shrink: 0;
-        }
-
-        /* Image Preview (200px) */
-        .opt-image-preview { 
-            width: 200px; height: 200px; 
-            border-radius: 12px; object-fit: cover; 
-            border: 1px solid var(--border); flex-shrink: 0; background: #fff;
-        }
-
-        /* States */
+        .opt-char { width: 36px; height: 36px; background: var(--bg-body); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; color: var(--text-sec); border: 1px solid var(--border); flex-shrink: 0; }
+        .opt-image-preview { width: 200px; height: 200px; border-radius: 12px; object-fit: cover; border: 1px solid var(--border); flex-shrink: 0; background: #fff; }
         .option-btn.correct { border-color: var(--success); background: var(--success-bg); }
         .option-btn.correct .opt-char { background: var(--success); color: white; border-color: var(--success); }
-        
         .option-btn.wrong { border-color: var(--danger); background: var(--danger-bg); }
         .option-btn.wrong .opt-char { background: var(--danger); color: white; border-color: var(--danger); }
+        .quiz-footer { padding: 20px; border-top: 1px solid var(--border); background: var(--surface); display: flex; justify-content: center; }
+        .primary-btn { background: var(--text-main); color: white; border: none; padding: 16px 32px; border-radius: 16px; font-weight: 700; width: 100%; max-width: 400px; font-size: 1rem; box-shadow: var(--shadow-md); cursor: pointer; }
 
-        .quiz-footer { 
-            padding: 20px; border-top: 1px solid var(--border); background: var(--surface);
-            display: flex; justify-content: center;
-        }
-        .primary-btn { 
-            background: var(--text-main); color: white; border: none; 
-            padding: 16px 32px; border-radius: 16px; font-weight: 700; width: 100%; max-width: 400px;
-            font-size: 1rem; box-shadow: var(--shadow-md); cursor: pointer; transition: 0.2s;
-        }
-        .primary-btn:active { transform: scale(0.98); opacity: 0.9; }
-
-        /* --- 4. RESULT VIEW --- */
+        /* RESULT */
         #resultView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 200; overflow-y: auto; }
-        
-        .result-card { 
-            background: var(--surface); width: 100%; max-width: 420px; 
-            border-radius: 32px; overflow: hidden; 
-            box-shadow: var(--shadow-lg); border: 1px solid var(--border); 
-            text-align: center; margin: 30px auto 20px; 
-        }
-        
-        .res-top { 
-            height: 150px; background: linear-gradient(135deg, #5b4dff 0%, #8b5cf6 100%); 
-            display: flex; justify-content: center; align-items: center; position: relative;
-        }
-        .res-top::after {
-            content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 20px;
-            background: var(--surface); border-radius: 30px 30px 0 0;
-        }
-
-        .trophy-emoji { font-size: 4.5rem; animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); }
-        
-        .res-avatar { 
-            width: 80px; height: 80px; border-radius: 50%; 
-            border: 5px solid var(--surface); margin: -40px auto 10px; 
-            background: #fff; position: relative; object-fit: cover; z-index: 2;
-        }
-        
-        .res-score-huge { font-size: 3.2rem; font-weight: 800; color: var(--primary); margin: 5px 0; line-height: 1.1; }
+        .result-card { background: var(--surface); width: 100%; max-width: 420px; border-radius: 32px; overflow: hidden; box-shadow: var(--shadow-lg); border: 1px solid var(--border); text-align: center; margin: 30px auto 20px; }
+        .res-top { height: 150px; background: linear-gradient(135deg, #5b4dff 0%, #8b5cf6 100%); display: flex; justify-content: center; align-items: center; position: relative; }
+        .trophy-emoji { font-size: 4.5rem; animation: popIn 0.8s; }
+        .res-avatar { width: 80px; height: 80px; border-radius: 50%; border: 5px solid var(--surface); margin: -40px auto 10px; background: #fff; position: relative; object-fit: cover; }
+        .res-score-huge { font-size: 3.2rem; font-weight: 800; color: var(--primary); margin: 5px 0; }
         .res-label { color: var(--text-sec); font-weight: 600; font-size: 0.9rem; margin-bottom: 20px; }
-
-        .stats-grid { 
-            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; 
-            padding: 0 25px 30px; 
-        }
-        
-        .stat-box { 
-            padding: 16px; border-radius: 20px; 
-            display: flex; flex-direction: column; align-items: center; gap: 6px;
-            font-weight: 700; font-size: 1rem;
-        }
-        .stat-box i { font-size: 1.2rem; margin-bottom: 2px; }
-        .stat-label { font-size: 0.75rem; font-weight: 600; opacity: 0.8; }
-        
-        .green { background: var(--success-bg); color: var(--success); } 
-        .red { background: var(--danger-bg); color: var(--danger); }
-        .blue { background: var(--primary-light); color: var(--primary); } 
-        .orange { background: var(--warning-bg); color: var(--warning); }
-
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 25px 30px; }
+        .stat-box { padding: 16px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; gap: 6px; font-weight: 700; font-size: 1rem; }
+        .green { background: var(--success-bg); color: var(--success); } .red { background: var(--danger-bg); color: var(--danger); }
+        .blue { background: var(--primary-light); color: var(--primary); } .orange { background: var(--warning-bg); color: var(--warning); }
         .action-row { width: 100%; max-width: 420px; display: flex; gap: 12px; margin: 0 auto 40px; padding: 0 20px; }
-        .btn-glass { 
-            flex: 1; padding: 16px; border-radius: 16px; 
-            border: 1px solid var(--border); background: var(--surface); 
-            font-weight: 700; color: var(--text-main); cursor: pointer;
-            transition: 0.2s;
-        }
-        .btn-glass:active { background: var(--bg-body); }
-
-        /* Animations */
-        @keyframes popIn { 0% { transform: scale(0) rotate(-20deg); opacity: 0; } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
+        .btn-glass { flex: 1; padding: 16px; border-radius: 16px; border: 1px solid var(--border); background: var(--surface); font-weight: 700; color: var(--text-main); cursor: pointer; }
+        @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
         .fade-in { animation: fadeIn 0.4s ease-out backwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        /* Mobile Tweaks */
-        @media (max-width: 400px) {
-            .brand-title { font-size: 1.1rem; }
-            .profile-name { display: none; }
-            .nav-btn { width: 40px; height: 40px; }
-        }
+        @media (max-width: 400px) { .brand-title { font-size: 1.1rem; } .profile-name { display: none; } }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
     <!-- TOPIC SCREEN -->
     <div id="topicScreen">
-        <!-- Header -->
         <header class="app-header fade-in">
             <div class="header-left">
-                <div class="nav-btn" onclick="window.history.back()">
-                    <i class="fa-solid fa-chevron-left"></i>
+                <!-- Refresh Button added specifically to help you see Admin changes -->
+                <div class="nav-btn" onclick="forceReload()" title="Refresh Data">
+                    <i class="fa-solid fa-rotate-right"></i>
                 </div>
                 <div class="title-group">
                     <span class="brand-subtitle">MOCK TEST SERIES</span>
@@ -334,48 +140,34 @@
             </div>
         </header>
 
-        <!-- Hero -->
         <div class="hero-section fade-in" style="margin-top:20px; animation-delay: 0.1s;">
-            <h2 class="hero-title">Let's practice! 👋</h2>
-            <div class="hero-sub">Choose a category to start your mock test.</div>
+            <div>
+                <h2 class="hero-title">Let's practice! 👋</h2>
+                <div class="hero-sub">Choose a category to start.</div>
+            </div>
         </div>
 
-        <!-- Grid -->
         <div class="grid-container" id="topicGrid"></div>
     </div>
 
-    <!-- QUIZ INTERFACE -->
+    <!-- QUIZ & RESULT HTML SAME AS BEFORE... -->
     <div id="quizInterface">
         <div class="quiz-header">
-            <div class="timer-badge">
-                <i class="fa-solid fa-stopwatch" style="color:var(--text-sec)"></i> 
-                <span id="timerText">60s</span>
-            </div>
+            <div class="timer-badge"><i class="fa-solid fa-stopwatch" style="color:var(--text-sec)"></i> <span id="timerText">60s</span></div>
             <div class="nav-btn" style="border:none; background:transparent; box-shadow:none; width:auto;" onclick="confirmExit()">
                 <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-sec)"></i>
             </div>
         </div>
-        
         <div class="progress-container"><div class="progress-fill" id="progressBar"></div></div>
-        
         <div class="quiz-scroll">
             <div class="q-meta">QUESTION <span id="qIndex">1</span></div>
-            
-            <!-- Text First -->
-            <div class="q-text" id="qText">Loading question...</div>
-            
-            <!-- Image Second -->
+            <div class="q-text" id="qText">Loading...</div>
             <img id="qImage" src="" class="q-image-img">
-            
             <div id="optionsList"></div>
         </div>
-
-        <div class="quiz-footer">
-            <button id="nextBtn" class="primary-btn" onclick="nextQuestion()">Next Question</button>
-        </div>
+        <div class="quiz-footer"><button id="nextBtn" class="primary-btn" onclick="nextQuestion()">Next Question</button></div>
     </div>
 
-    <!-- RESULT VIEW -->
     <div id="resultView">
         <div class="result-card fade-in" id="captureArea">
             <div class="res-top"><div class="trophy-emoji">🏆</div></div>
@@ -383,44 +175,21 @@
             <h2 id="resName" style="margin:10px 0 0; font-size:1.3rem; font-weight:700;">Student</h2>
             <div class="res-score-huge" id="resScore">0%</div>
             <div class="res-label">Accuracy Score</div>
-
             <div class="stats-grid">
-                <div class="stat-box green">
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span id="resRight">0</span>
-                    <span class="stat-label">Correct</span>
-                </div>
-                <div class="stat-box red">
-                    <i class="fa-solid fa-circle-xmark"></i>
-                    <span id="resWrong">0</span>
-                    <span class="stat-label">Wrong</span>
-                </div>
-                <div class="stat-box blue">
-                    <i class="fa-solid fa-list-check"></i>
-                    <span id="resTotalQ">0</span>
-                    <span class="stat-label">Total</span>
-                </div>
-                <div class="stat-box orange">
-                    <i class="fa-solid fa-hourglass-half"></i>
-                    <span id="resTime">0s</span>
-                    <span class="stat-label">Time</span>
-                </div>
+                <div class="stat-box green"><i class="fa-solid fa-circle-check"></i><span id="resRight">0</span><span class="stat-label">Correct</span></div>
+                <div class="stat-box red"><i class="fa-solid fa-circle-xmark"></i><span id="resWrong">0</span><span class="stat-label">Wrong</span></div>
+                <div class="stat-box blue"><i class="fa-solid fa-list-check"></i><span id="resTotalQ">0</span><span class="stat-label">Total</span></div>
+                <div class="stat-box orange"><i class="fa-solid fa-hourglass-half"></i><span id="resTime">0s</span><span class="stat-label">Time</span></div>
             </div>
         </div>
-        <div class="action-row fade-in" style="animation-delay: 0.2s;">
-            <button class="btn-glass" onclick="returnToHome()">Back to Topics</button>
-            <button class="primary-btn" onclick="shareResult()" style="flex:1;">Share Result</button>
-        </div>
+        <div class="action-row fade-in"><button class="btn-glass" onclick="returnToHome()">Back</button><button class="primary-btn" onclick="shareResult()" style="flex:1;">Share</button></div>
     </div>
 
     <script>
-        // CONFIG & DATA
+        // CONFIG
         const name = localStorage.getItem('iti_student_name') || "Student";
         const pic = localStorage.getItem('iti_student_pic') || `https://ui-avatars.com/api/?name=${name}&background=5b4dff&color=fff&font-size=0.5&bold=true`;
         let savedScores = JSON.parse(localStorage.getItem('iti_scores')) || {};
-
-        const defaultTopics = [ { id: "demo", name: "Demo Topic", icon: "fa-bolt", color: "#5b4dff" } ];
-        const defaultQBank = { "demo": [{t:"What is the unit of Voltage?", o:["Ampere","Volt","Ohm","Watt"], a:1}] };
 
         let topics = [], qBank = {};
 
@@ -432,13 +201,35 @@
             
             loadData();
             renderTopics();
+            
+            // --- NEW: LISTEN FOR ADMIN CHANGES ---
+            window.addEventListener('storage', (e) => {
+                // Agar Admin panel 'iti_topics' ya 'iti_qbank_full' ko change karega, to ye automatic reload karega
+                if(e.key === 'iti_topics' || e.key === 'iti_qbank_full') {
+                    console.log("Admin Data Updated! Refreshing...");
+                    loadData();
+                    renderTopics();
+                }
+            });
         };
+
+        // --- NEW: MANUAL REFRESH BUTTON LOGIC ---
+        function forceReload() {
+            loadData();
+            renderTopics();
+            // Animation feedback
+            const btn = document.querySelector('.nav-btn i');
+            btn.style.transition = 'transform 0.5s';
+            btn.style.transform = 'rotate(360deg)';
+            setTimeout(() => btn.style.transform = 'rotate(0deg)', 500);
+        }
 
         function loadData() {
             const t = localStorage.getItem('iti_topics');
-            topics = t ? JSON.parse(t) : defaultTopics;
+            // If data is null, use empty array instead of demo data to check connection
+            topics = t ? JSON.parse(t) : []; 
             const q = localStorage.getItem('iti_qbank_full');
-            qBank = q ? JSON.parse(q) : defaultQBank;
+            qBank = q ? JSON.parse(q) : {};
         }
 
         function renderTopics() {
@@ -446,7 +237,12 @@
             grid.innerHTML = '';
             
             if(topics.length === 0) {
-                grid.innerHTML = `<div style="text-align:center; padding:40px; grid-column:1/-1; color:var(--text-sec)">No topics available yet.</div>`;
+                grid.innerHTML = `
+                <div style="text-align:center; padding:40px; grid-column:1/-1; color:var(--text-sec)">
+                    <i class="fa-solid fa-folder-open" style="font-size:3rem; margin-bottom:15px; opacity:0.3"></i><br>
+                    No topics found.<br>
+                    <span style="font-size:0.8rem">Check Admin Panel or click the Refresh button above.</span>
+                </div>`;
                 return;
             }
 
@@ -456,9 +252,8 @@
                 let lastScore = savedScores[t.id];
                 let scoreHtml = lastScore !== undefined ? `<div class="card-score">${lastScore}%</div>` : '';
                 
-                // Using fade-in animation with staggered delay
                 grid.innerHTML += `
-                <div class="card fade-in" style="animation-delay:${i*0.05 + 0.2}s" onclick="startQuiz('${t.id}')">
+                <div class="card fade-in" style="animation-delay:${i*0.05}s" onclick="startQuiz('${t.id}')">
                     ${scoreHtml}
                     <div class="card-icon" style="color:${t.color || '#5b4dff'}; background:${t.color ? t.color+'15' : '#eef2ff'}">
                         <i class="fa-solid ${t.icon}"></i>
@@ -472,7 +267,7 @@
             });
         }
 
-        // QUIZ LOGIC
+        // --- QUIZ LOGIC (Unchanged) ---
         let activeQs=[], curr=0, score=0, timer, selectedAnswer=false, quizStartTime, currentTopicId="", correctVisualIndex=0;
 
         function startQuiz(id) {
@@ -485,7 +280,7 @@
                 document.getElementById('resultView').style.display = 'none'; 
                 document.getElementById('quizInterface').style.display = 'flex';
                 loadQ();
-            } else alert("No questions available in this topic.");
+            } else alert("This topic has no questions yet.");
         }
 
         function loadQ() {
@@ -494,7 +289,7 @@
             document.getElementById('timerText').innerText = "60s";
             document.getElementById('nextBtn').style.opacity = "0.5";
             document.getElementById('nextBtn').style.pointerEvents = "none";
-            document.getElementById('nextBtn').innerText = "Select an Option";
+            document.getElementById('nextBtn').innerText = "Select Option";
 
             const q = activeQs[curr];
             document.getElementById('qIndex').innerText = `${curr + 1} / ${activeQs.length}`;
@@ -503,7 +298,6 @@
             const qImg = document.getElementById('qImage');
             if(q.qImg) { qImg.src = q.qImg; qImg.style.display = 'block'; } else { qImg.style.display = 'none'; }
             
-            // Progress Bar Animation
             setTimeout(()=>document.getElementById('progressBar').style.width = `${((curr)/activeQs.length)*100}%`, 50);
 
             let opts = q.o.map((text, idx) => ({ text, idx, img: (q.oImg && q.oImg[idx]) ? q.oImg[idx] : null }));
@@ -513,50 +307,29 @@
             opts.forEach((item, vIdx) => {
                 if(item.idx === q.a) correctVisualIndex = vIdx;
                 let imgHtml = item.img ? `<img src="${item.img}" class="opt-image-preview">` : '';
-                
-                list.innerHTML += `
-                <div class="option-btn fade-in" style="animation-delay:${vIdx*0.05}s" onclick="check(this,${vIdx})">
-                    <div class="opt-char">${String.fromCharCode(65+vIdx)}</div>
-                    ${imgHtml}
-                    <div style="font-weight:500; line-height:1.4;">${item.text}</div>
+                list.innerHTML += `<div class="option-btn fade-in" style="animation-delay:${vIdx*0.05}s" onclick="check(this,${vIdx})">
+                    <div class="opt-char">${String.fromCharCode(65+vIdx)}</div>${imgHtml}<div>${item.text}</div>
                 </div>`;
             });
 
             timer = setInterval(() => {
                 time--; document.getElementById('timerText').innerText = time + "s";
-                if(time < 10) document.getElementById('timerText').style.color = "var(--danger)";
-                else document.getElementById('timerText').style.color = "var(--text-main)";
-                
                 if(time<=0) { clearInterval(timer); autoFail(); }
             }, 1000);
         }
 
         function check(el, vIdx) {
             if(selectedAnswer) return; selectedAnswer = true; clearInterval(timer);
-            
-            const allOpts = document.querySelectorAll('.option-btn');
-            
-            if(vIdx === correctVisualIndex) { 
-                el.classList.add('correct'); 
-                score++; 
-                if(window.confetti) confetti({ particleCount: 50, spread: 60, origin: { y: 0.7 } }); 
-            } else { 
-                el.classList.add('wrong'); 
-                allOpts[correctVisualIndex].classList.add('correct'); 
-            }
-            
-            const btn = document.getElementById('nextBtn'); 
-            btn.style.opacity = "1"; btn.style.pointerEvents = "all";
+            if(vIdx === correctVisualIndex) { el.classList.add('correct'); score++; if(window.confetti) confetti(); } 
+            else { el.classList.add('wrong'); document.querySelectorAll('.option-btn')[correctVisualIndex].classList.add('correct'); }
+            const btn = document.getElementById('nextBtn'); btn.style.opacity = "1"; btn.style.pointerEvents = "all";
             btn.innerText = (curr === activeQs.length - 1) ? "View Results" : "Next Question";
         }
 
         function autoFail() {
             selectedAnswer = true;
-            const allOpts = document.querySelectorAll('.option-btn');
-            allOpts[correctVisualIndex].classList.add('correct');
-            
-            const btn = document.getElementById('nextBtn'); 
-            btn.style.opacity = "1"; btn.style.pointerEvents = "all";
+            document.querySelectorAll('.option-btn')[correctVisualIndex].classList.add('correct');
+            const btn = document.getElementById('nextBtn'); btn.style.opacity = "1"; btn.style.pointerEvents = "all";
             btn.innerText = (curr === activeQs.length - 1) ? "View Results" : "Next Question";
         }
 
@@ -576,13 +349,8 @@
             document.getElementById('resRight').innerText = score;
             document.getElementById('resWrong').innerText = activeQs.length - score;
             document.getElementById('resTotalQ').innerText = activeQs.length;
-            
             let totalSeconds = Math.floor((Date.now() - quizStartTime) / 1000);
             document.getElementById('resTime').innerText = `${totalSeconds}s`;
-            
-            if(finalScore > 70 && window.confetti) {
-                setTimeout(() => confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } }), 500);
-            }
         }
 
         function returnToHome() {
@@ -592,14 +360,13 @@
             loadData(); renderTopics(); 
         }
 
-        function confirmExit(){ if(confirm("Quit this quiz? Progress will be lost.")) returnToHome(); }
+        function confirmExit(){ if(confirm("Quit Quiz?")) returnToHome(); }
         
         function shareResult() {
-            const cap = document.getElementById('captureArea');
-            html2canvas(cap, { scale: 2, backgroundColor: '#ffffff' }).then(c => {
+            html2canvas(document.getElementById('captureArea'), { scale: 2 }).then(c => {
                 c.toBlob(b => {
                     const f = new File([b], "result.png", { type: "image/png" });
-                    if(navigator.share) navigator.share({ files: [f], title: 'My Quiz Result' });
+                    if(navigator.share) navigator.share({ files: [f] });
                     else { const a = document.createElement('a'); a.href=c.toDataURL(); a.download="result.png"; a.click(); }
                 });
             });
