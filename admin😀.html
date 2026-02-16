@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - ITI Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: #f1f5f9; color: #1e293b; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        
+        .header { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        h2 { margin: 0; color: #4f46e5; }
+        
+        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab-btn { padding: 10px 20px; border: none; background: white; border-radius: 8px; font-weight: 600; cursor: pointer; color: #64748b; }
+        .tab-btn.active { background: #4f46e5; color: white; }
+        
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: 700; font-size: 0.9rem; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-family: inherit; box-sizing: border-box; }
+        
+        /* OPTION GROUP STYLING */
+        .option-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
+        .opt-text { flex: 2; }
+        .opt-img { flex: 1; }
+
+        .btn { width: 100%; padding: 12px; background: #4f46e5; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+        .btn:hover { background: #4338ca; }
+        .btn-danger { background: #ef4444; } .btn-danger:hover { background: #dc2626; }
+        
+        .item-list { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+        .item { display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .btn-del { background: #fee2e2; color: #ef4444; border: none; width: 32px; height: 32px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h2><i class="fa-solid fa-user-shield"></i> Admin Panel</h2>
+        <!-- BUTTON TO OPEN STUDENT APP -->
+        <button class="tab-btn" onclick="window.location.href='index.html'">Open App</button>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('topics')" id="tab-topics">Topics</button>
+        <button class="tab-btn" onclick="showTab('questions')" id="tab-questions">Questions</button>
+    </div>
+
+    <!-- MANAGE TOPICS -->
+    <div id="view-topics">
+        <div class="card">
+            <h3>Add New Topic</h3>
+            <div class="form-group"><label>Topic Name</label><input type="text" id="tName" placeholder="Ex. Electronics"></div>
+            <div class="form-group"><label>Icon Class (FontAwesome)</label><input type="text" id="tIcon" placeholder="Ex. fa-bolt" value="fa-bolt"></div>
+            <button class="btn" onclick="addTopic()">Create Topic</button>
+        </div>
+        <div class="card">
+            <h3>Existing Topics</h3>
+            <div id="topicList" class="item-list"></div>
+        </div>
+    </div>
+
+    <!-- MANAGE QUESTIONS -->
+    <div id="view-questions" class="hidden">
+        <div class="card">
+            <div class="form-group">
+                <label>Select Topic to Edit</label>
+                <select id="qTopicSel" onchange="renderQuestions()"></select>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Add Question</h3>
+            <div class="form-group"><label>Question Text</label><textarea id="qText" rows="2"></textarea></div>
+            <div class="form-group"><label>Question Image URL (Optional)</label><input type="text" id="qImg" placeholder="https://..."></div>
+            
+            <label style="margin-top:15px">Options (Enter Text OR Image URL)</label>
+            
+            <!-- OPTION A -->
+            <div class="option-row">
+                <input type="text" id="o1" class="opt-text" placeholder="Option A Text">
+                <input type="text" id="o1_img" class="opt-img" placeholder="Img URL (Opt)">
+            </div>
+            
+            <!-- OPTION B -->
+            <div class="option-row">
+                <input type="text" id="o2" class="opt-text" placeholder="Option B Text">
+                <input type="text" id="o2_img" class="opt-img" placeholder="Img URL (Opt)">
+            </div>
+
+            <!-- OPTION C -->
+            <div class="option-row">
+                <input type="text" id="o3" class="opt-text" placeholder="Option C Text">
+                <input type="text" id="o3_img" class="opt-img" placeholder="Img URL (Opt)">
+            </div>
+
+            <!-- OPTION D -->
+            <div class="option-row">
+                <input type="text" id="o4" class="opt-text" placeholder="Option D Text">
+                <input type="text" id="o4_img" class="opt-img" placeholder="Img URL (Opt)">
+            </div>
+
+            <div class="form-group" style="margin-top:15px">
+                <label>Correct Answer</label>
+                <select id="qAns">
+                    <option value="0">Option A</option>
+                    <option value="1">Option B</option>
+                    <option value="2">Option C</option>
+                    <option value="3">Option D</option>
+                </select>
+            </div>
+            <button class="btn" onclick="addQuestion()">Add Question</button>
+        </div>
+
+        <div class="card">
+            <h3>Questions List</h3>
+            <div id="qList" class="item-list"></div>
+        </div>
+    </div>
+    
+    <div style="text-align:center; margin-top:30px;">
+        <button class="btn btn-danger" style="width:auto" onclick="resetAll()">Reset Everything (Factory Reset)</button>
+    </div>
+</div>
+
+<script>
+    // DATA HANDLING
+    let topics = [];
+    let qBank = {};
+
+    // Initial Load
+    window.onload = () => {
+        loadData();
+        renderTopics();
+        populateTopicSelect();
+    };
+
+    function loadData() {
+        const t = localStorage.getItem('iti_topics');
+        const q = localStorage.getItem('iti_qbank_full');
+        
+        // Initialize if empty
+        if(!t) {
+            topics = [{ id: "demo", name: "Demo Topic", icon: "fa-star", color: "#4f46e5" }];
+            qBank = { "demo": [] };
+            saveData();
+        } else {
+            topics = JSON.parse(t);
+            qBank = q ? JSON.parse(q) : {};
+        }
+    }
+
+    function saveData() {
+        localStorage.setItem('iti_topics', JSON.stringify(topics));
+        localStorage.setItem('iti_qbank_full', JSON.stringify(qBank));
+    }
+
+    // TABS
+    function showTab(tab) {
+        document.getElementById('view-topics').classList.add('hidden');
+        document.getElementById('view-questions').classList.add('hidden');
+        document.getElementById('tab-topics').classList.remove('active');
+        document.getElementById('tab-questions').classList.remove('active');
+
+        document.getElementById('view-' + tab).classList.remove('hidden');
+        document.getElementById('tab-' + tab).classList.add('active');
+    }
+
+    // TOPIC LOGIC
+    function renderTopics() {
+        const list = document.getElementById('topicList');
+        list.innerHTML = '';
+        topics.forEach(t => {
+            const count = qBank[t.id] ? qBank[t.id].length : 0;
+            list.innerHTML += `<div class="item">
+                <div><strong>${t.name}</strong> <small>(${count} Qs)</small></div>
+                <button class="btn-del" onclick="delTopic('${t.id}')"><i class="fa-solid fa-trash"></i></button>
+            </div>`;
+        });
+    }
+
+    function addTopic() {
+        const name = document.getElementById('tName').value;
+        const icon = document.getElementById('tIcon').value;
+        if(!name) return alert("Name required");
+
+        const id = name.toLowerCase().replace(/ /g, '_') + '_' + Date.now();
+        topics.push({ id, name, icon, color: '#4f46e5' });
+        qBank[id] = [];
+        
+        saveData();
+        renderTopics();
+        populateTopicSelect();
+        document.getElementById('tName').value = '';
+    }
+
+    function delTopic(id) {
+        if(confirm("Delete topic and all its questions?")) {
+            topics = topics.filter(t => t.id !== id);
+            delete qBank[id];
+            saveData();
+            renderTopics();
+            populateTopicSelect();
+        }
+    }
+
+    // QUESTION LOGIC
+    function populateTopicSelect() {
+        const sel = document.getElementById('qTopicSel');
+        sel.innerHTML = '';
+        topics.forEach(t => {
+            let opt = document.createElement('option');
+            opt.value = t.id; opt.innerText = t.name;
+            sel.appendChild(opt);
+        });
+        renderQuestions();
+    }
+
+    function renderQuestions() {
+        const tid = document.getElementById('qTopicSel').value;
+        const list = document.getElementById('qList');
+        list.innerHTML = '';
+        
+        if(qBank[tid]) {
+            qBank[tid].forEach((q, i) => {
+                let hasImg = q.qImg ? '<i class="fa-regular fa-image"></i> ' : '';
+                list.innerHTML += `<div class="item">
+                    <div style="flex:1; margin-right:10px;">
+                        <div style="font-weight:600; font-size:0.9rem">${i+1}. ${hasImg}${q.t}</div>
+                        <div style="font-size:0.8rem; color:#64748b">Ans: ${q.o[q.a] || 'Image Option'}</div>
+                    </div>
+                    <button class="btn-del" onclick="delQuestion('${tid}', ${i})"><i class="fa-solid fa-trash"></i></button>
+                </div>`;
+            });
+        }
+    }
+
+    function addQuestion() {
+        const tid = document.getElementById('qTopicSel').value;
+        const t = document.getElementById('qText').value.trim();
+        const img = document.getElementById('qImg').value.trim();
+        
+        // Option Texts
+        const o1 = document.getElementById('o1').value.trim();
+        const o2 = document.getElementById('o2').value.trim();
+        const o3 = document.getElementById('o3').value.trim();
+        const o4 = document.getElementById('o4').value.trim();
+        
+        // Option Images
+        const o1img = document.getElementById('o1_img').value.trim();
+        const o2img = document.getElementById('o2_img').value.trim();
+        const o3img = document.getElementById('o3_img').value.trim();
+        const o4img = document.getElementById('o4_img').value.trim();
+
+        const a = parseInt(document.getElementById('qAns').value);
+
+        // --- UPDATED VALIDATION LOGIC ---
+        // Ensure Question text exists
+        if(!t) return alert("Question text is required");
+
+        // Ensure at least first 2 options have EITHER text OR an image
+        const opt1Valid = (o1 !== "" || o1img !== "");
+        const opt2Valid = (o2 !== "" || o2img !== "");
+
+        if(!opt1Valid || !opt2Valid) {
+            return alert("Options A and B must have either text or an image.");
+        }
+        // --------------------------------
+
+        if(!qBank[tid]) qBank[tid] = [];
+        
+        // Save empty string if text is missing but image exists (Student App handles this)
+        const newQ = { t, o: [o1, o2, o3, o4], a };
+        
+        // Add Question Image if present
+        if(img) newQ.qImg = img;
+
+        // Add Option Images logic
+        // We always save the array if even one image exists to maintain index alignment
+        if(o1img || o2img || o3img || o4img) {
+            newQ.oImg = [o1img, o2img, o3img, o4img];
+        }
+
+        qBank[tid].push(newQ);
+        saveData();
+        renderQuestions();
+        renderTopics(); // Update counts
+        
+        // Clear all fields
+        document.getElementById('qText').value = '';
+        document.getElementById('qImg').value = '';
+        document.getElementById('o1').value = '';
+        document.getElementById('o2').value = '';
+        document.getElementById('o3').value = '';
+        document.getElementById('o4').value = '';
+        document.getElementById('o1_img').value = '';
+        document.getElementById('o2_img').value = '';
+        document.getElementById('o3_img').value = '';
+        document.getElementById('o4_img').value = '';
+        
+        alert("Question Added Successfully!");
+    }
+
+    function delQuestion(tid, idx) {
+        if(confirm("Delete question?")) {
+            qBank[tid].splice(idx, 1);
+            saveData();
+            renderQuestions();
+            renderTopics();
+        }
+    }
+
+    function resetAll() {
+        if(confirm("Factory Reset? All data will be lost!")) {
+            localStorage.removeItem('iti_topics');
+            localStorage.removeItem('iti_qbank_full');
+            localStorage.removeItem('iti_scores');
+            location.reload();
+        }
+    }
+</script>
+
+</body>
+</html>
