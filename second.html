@@ -7,22 +7,18 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
     <style>
-        /* ... (Purana CSS same rahega) ... */
         :root {
             --primary: #5b4dff; 
             --primary-dark: #4335dd;
             --primary-light: #eef2ff;
             --success: #10b981; --success-bg: #ecfdf5;
             --danger: #ef4444; --danger-bg: #fef2f2;
-            --warning: #f59e0b; --warning-bg: #fffbeb;
             --text-main: #0f172a; --text-sec: #64748b;
-            --bg-body: #f8fafc; --surface: #ffffff;
-            --border: #e2e8f0;
+            --bg-body: #f8fafc; --surface: #ffffff; --border: #e2e8f0;
             --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
             --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
         }
@@ -33,89 +29,93 @@
         /* HEADER */
         .app-header {
             padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;
-            height: 85px; width: 100%; max-width: 1000px; margin: 0 auto; 
-            background: var(--surface); border-bottom: 1px solid var(--border); z-index: 50;
+            height: 85px; width: 100%; max-width: 1000px; margin: 0 auto; background: var(--surface); border-bottom: 1px solid var(--border); z-index: 50;
         }
         .header-left { display: flex; align-items: center; gap: 16px; }
-        
-        /* Refresh Button Added */
         .nav-btn {
-            width: 44px; height: 44px; background: var(--surface); border: 1px solid var(--border); 
-            border-radius: 14px; display: flex; align-items: center; justify-content: center; 
-            font-size: 1.1rem; cursor: pointer; color: var(--text-main); box-shadow: var(--shadow-sm);
-            transition: all 0.2s ease;
+            width: 44px; height: 44px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+            display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; color: var(--text-main);
+            box-shadow: var(--shadow-sm); transition: 0.2s;
         }
-        .nav-btn:active { transform: scale(0.92); background: var(--bg-body); }
-
-        .title-group { display: flex; flex-direction: column; justify-content: center; }
-        .brand-subtitle { font-size: 0.65rem; color: var(--text-sec); font-weight: 700; text-transform: uppercase; margin-bottom: 2px; }
-        .brand-title { font-size: 1.35rem; font-weight: 800; margin: 0; color: var(--primary); line-height: 1; }
+        .nav-btn:active { transform: scale(0.92); }
+        .title-group { display: flex; flex-direction: column; }
+        .brand-subtitle { font-size: 0.65rem; color: var(--text-sec); font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 2px; }
+        .brand-title { font-size: 1.35rem; font-weight: 800; margin: 0; color: var(--primary); line-height: 1; letter-spacing: -0.5px; }
 
         .profile-pill {
             display: flex; align-items: center; gap: 10px; padding: 5px 5px 5px 16px; 
-            background: var(--surface); border: 1px solid var(--border); border-radius: 50px; box-shadow: var(--shadow-sm);
+            background: var(--surface); border: 1px solid var(--border); border-radius: 50px; box-shadow: var(--shadow-sm); cursor: pointer;
         }
         .profile-name { font-weight: 700; font-size: 0.95rem; color: var(--text-main); max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .profile-img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; display: block; background: var(--primary-light); }
 
         /* DASHBOARD */
         #topicScreen { height: calc(100vh - 85px); overflow-y: auto; padding: 20px 20px 100px; max-width: 1000px; margin: 0 auto; }
-        .hero-section { margin-bottom: 25px; display: flex; justify-content: space-between; align-items: flex-end; }
-        .hero-title { font-size: 1.75rem; font-weight: 800; margin: 0 0 8px; color: var(--text-main); }
-        .hero-sub { color: var(--text-sec); font-size: 0.95rem; font-weight: 500; }
-        
+        .hero-title { font-size: 1.75rem; font-weight: 800; margin: 10px 0 8px; color: var(--text-main); }
+        .hero-sub { color: var(--text-sec); font-size: 0.95rem; font-weight: 500; margin-bottom: 25px; }
         .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+        
         .card {
             background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 20px;
-            display: flex; align-items: center; gap: 18px; box-shadow: var(--shadow-sm); 
-            cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden;
+            display: flex; align-items: center; gap: 18px; box-shadow: var(--shadow-sm); cursor: pointer; position: relative; overflow: hidden;
         }
         .card:active { transform: scale(0.98); }
         .card-icon { width: 56px; height: 56px; border-radius: 16px; background: var(--primary-light); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: var(--primary); flex-shrink: 0; }
-        .card-info h3 { margin: 0 0 4px; font-size: 1.05rem; font-weight: 700; color: var(--text-main); }
+        .card-info h3 { margin: 0 0 4px; font-size: 1.05rem; font-weight: 700; }
         .card-info span { font-size: 0.85rem; color: var(--text-sec); font-weight: 500; }
-        .card-arrow { color: var(--border); transition: 0.2s; }
         .card-score { position: absolute; top: 12px; right: 12px; background: var(--success-bg); color: var(--success); font-weight: 700; font-size: 0.7rem; padding: 4px 10px; border-radius: 20px; }
 
         /* QUIZ */
         #quizInterface { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--surface); z-index: 100; display: none; flex-direction: column; }
         .quiz-header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); height: 70px; }
-        .timer-badge { background: var(--bg-body); padding: 8px 16px; border-radius: 30px; font-weight: 700; font-size: 0.9rem; color: var(--text-main); border: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+        .timer-badge { background: var(--bg-body); padding: 8px 16px; border-radius: 30px; font-weight: 700; font-size: 0.9rem; border: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
         .progress-container { height: 4px; background: var(--border); width: 100%; }
         .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.4s ease; }
+        
         .quiz-scroll { flex: 1; overflow-y: auto; padding: 25px 20px; max-width: 800px; margin: 0 auto; width: 100%; }
         .q-meta { color: var(--primary); font-weight: 700; font-size: 0.8rem; margin-bottom: 12px; }
-        .q-text { font-size: 1.25rem; font-weight: 700; margin: 0 0 20px; line-height: 1.5; color: var(--text-main); }
-        .q-image-img { max-width: 100%; height: auto; max-height: 250px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 25px; display: none; box-shadow: var(--shadow-md); }
-        .option-btn { background: var(--surface); padding: 16px; border-radius: 16px; margin-bottom: 14px; cursor: pointer; display: flex; align-items: center; gap: 16px; border: 1.5px solid var(--border); transition: all 0.2s ease; flex-wrap: wrap; }
+        .q-text { font-size: 1.25rem; font-weight: 700; margin: 0 0 20px; line-height: 1.5; }
+        .q-image-img { max-width: 100%; height: auto; max-height: 250px; border-radius: 16px; border: 1px solid var(--border); margin-bottom: 25px; display: none; }
+        
+        .option-btn { background: var(--surface); padding: 16px; border-radius: 16px; margin-bottom: 14px; cursor: pointer; display: flex; align-items: center; gap: 16px; border: 1.5px solid var(--border); flex-wrap: wrap; }
         .option-btn:active { transform: scale(0.99); }
-        .opt-char { width: 36px; height: 36px; background: var(--bg-body); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; color: var(--text-sec); border: 1px solid var(--border); flex-shrink: 0; }
+        .opt-char { width: 36px; height: 36px; background: var(--bg-body); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; border: 1px solid var(--border); flex-shrink: 0; }
         .opt-image-preview { width: 200px; height: 200px; border-radius: 12px; object-fit: cover; border: 1px solid var(--border); flex-shrink: 0; background: #fff; }
+
         .option-btn.correct { border-color: var(--success); background: var(--success-bg); }
         .option-btn.correct .opt-char { background: var(--success); color: white; border-color: var(--success); }
         .option-btn.wrong { border-color: var(--danger); background: var(--danger-bg); }
         .option-btn.wrong .opt-char { background: var(--danger); color: white; border-color: var(--danger); }
+
         .quiz-footer { padding: 20px; border-top: 1px solid var(--border); background: var(--surface); display: flex; justify-content: center; }
-        .primary-btn { background: var(--text-main); color: white; border: none; padding: 16px 32px; border-radius: 16px; font-weight: 700; width: 100%; max-width: 400px; font-size: 1rem; box-shadow: var(--shadow-md); cursor: pointer; }
+        .primary-btn { background: var(--text-main); color: white; border: none; padding: 16px 32px; border-radius: 16px; font-weight: 700; width: 100%; font-size: 1rem; cursor: pointer; }
+
+        /* RESULT & ADMIN */
+        #resultView, #adminPanel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 200; overflow-y: auto; }
+        
+        /* ADMIN PANEL CSS */
+        .admin-header { padding: 20px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; }
+        .admin-content { padding: 20px; max-width: 800px; margin: 0 auto; }
+        .form-group { background: var(--surface); padding: 20px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
+        .form-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 15px; color: var(--primary); }
+        .inp { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid var(--border); border-radius: 10px; font-family: inherit; }
+        .btn-add { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 10px; font-weight: 700; width: 100%; cursor: pointer; }
+        .btn-del { background: var(--danger-bg); color: var(--danger); border: none; padding: 8px 12px; border-radius: 8px; font-weight: 700; cursor: pointer; float: right; font-size: 0.8rem; }
 
         /* RESULT */
-        #resultView { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 200; overflow-y: auto; }
-        .result-card { background: var(--surface); width: 100%; max-width: 420px; border-radius: 32px; overflow: hidden; box-shadow: var(--shadow-lg); border: 1px solid var(--border); text-align: center; margin: 30px auto 20px; }
-        .res-top { height: 150px; background: linear-gradient(135deg, #5b4dff 0%, #8b5cf6 100%); display: flex; justify-content: center; align-items: center; position: relative; }
-        .trophy-emoji { font-size: 4.5rem; animation: popIn 0.8s; }
+        .result-card { background: var(--surface); width: 100%; max-width: 420px; border-radius: 32px; overflow: hidden; box-shadow: var(--shadow-md); border: 1px solid var(--border); text-align: center; margin: 30px auto 20px; }
+        .res-top { height: 150px; background: linear-gradient(135deg, #5b4dff 0%, #8b5cf6 100%); display: flex; justify-content: center; align-items: center; }
         .res-avatar { width: 80px; height: 80px; border-radius: 50%; border: 5px solid var(--surface); margin: -40px auto 10px; background: #fff; position: relative; object-fit: cover; }
         .res-score-huge { font-size: 3.2rem; font-weight: 800; color: var(--primary); margin: 5px 0; }
-        .res-label { color: var(--text-sec); font-weight: 600; font-size: 0.9rem; margin-bottom: 20px; }
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 25px 30px; }
         .stat-box { padding: 16px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; gap: 6px; font-weight: 700; font-size: 1rem; }
         .green { background: var(--success-bg); color: var(--success); } .red { background: var(--danger-bg); color: var(--danger); }
-        .blue { background: var(--primary-light); color: var(--primary); } .orange { background: var(--warning-bg); color: var(--warning); }
+        .blue { background: var(--primary-light); color: var(--primary); } .orange { background: #fffbeb; color: #f59e0b; }
         .action-row { width: 100%; max-width: 420px; display: flex; gap: 12px; margin: 0 auto 40px; padding: 0 20px; }
-        .btn-glass { flex: 1; padding: 16px; border-radius: 16px; border: 1px solid var(--border); background: var(--surface); font-weight: 700; color: var(--text-main); cursor: pointer; }
-        @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .btn-glass { flex: 1; padding: 16px; border-radius: 16px; border: 1px solid var(--border); background: var(--surface); font-weight: 700; cursor: pointer; }
+
         .fade-in { animation: fadeIn 0.4s ease-out backwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @media (max-width: 400px) { .brand-title { font-size: 1.1rem; } .profile-name { display: none; } }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -124,41 +124,36 @@
     <div id="topicScreen">
         <header class="app-header fade-in">
             <div class="header-left">
-                <!-- Refresh Button added specifically to help you see Admin changes -->
-                <div class="nav-btn" onclick="forceReload()" title="Refresh Data">
-                    <i class="fa-solid fa-rotate-right"></i>
-                </div>
+                <div class="nav-btn" onclick="window.history.back()"><i class="fa-solid fa-chevron-left"></i></div>
                 <div class="title-group">
                     <span class="brand-subtitle">MOCK TEST SERIES</span>
                     <h1 class="brand-title">LOKHIPUR ITI PVT</h1>
                 </div>
             </div>
-            
-            <div class="profile-pill">
+            <!-- Click 5 times here for Admin Panel -->
+            <div class="profile-pill" onclick="triggerAdmin()">
                 <span id="headerName" class="profile-name">Student</span>
                 <img id="headPic" class="profile-img" src="">
             </div>
         </header>
 
         <div class="hero-section fade-in" style="margin-top:20px; animation-delay: 0.1s;">
-            <div>
-                <h2 class="hero-title">Let's practice! 👋</h2>
-                <div class="hero-sub">Choose a category to start.</div>
-            </div>
+            <h2 class="hero-title">Let's practice! 👋</h2>
+            <div class="hero-sub">Tap profile 5 times to Add Questions.</div>
         </div>
-
         <div class="grid-container" id="topicGrid"></div>
     </div>
 
-    <!-- QUIZ & RESULT HTML SAME AS BEFORE... -->
+    <!-- QUIZ INTERFACE -->
     <div id="quizInterface">
         <div class="quiz-header">
-            <div class="timer-badge"><i class="fa-solid fa-stopwatch" style="color:var(--text-sec)"></i> <span id="timerText">60s</span></div>
+            <div class="timer-badge"><i class="fa-solid fa-stopwatch"></i> <span id="timerText">60s</span></div>
             <div class="nav-btn" style="border:none; background:transparent; box-shadow:none; width:auto;" onclick="confirmExit()">
-                <i class="fa-solid fa-xmark" style="font-size:1.4rem; color:var(--text-sec)"></i>
+                <i class="fa-solid fa-xmark" style="font-size:1.4rem;"></i>
             </div>
         </div>
         <div class="progress-container"><div class="progress-fill" id="progressBar"></div></div>
+        
         <div class="quiz-scroll">
             <div class="q-meta">QUESTION <span id="qIndex">1</span></div>
             <div class="q-text" id="qText">Loading...</div>
@@ -168,25 +163,82 @@
         <div class="quiz-footer"><button id="nextBtn" class="primary-btn" onclick="nextQuestion()">Next Question</button></div>
     </div>
 
+    <!-- RESULT VIEW -->
     <div id="resultView">
         <div class="result-card fade-in" id="captureArea">
-            <div class="res-top"><div class="trophy-emoji">🏆</div></div>
+            <div class="res-top"><div style="font-size:4.5rem">🏆</div></div>
             <img id="resPic" class="res-avatar" src="">
-            <h2 id="resName" style="margin:10px 0 0; font-size:1.3rem; font-weight:700;">Student</h2>
+            <h2 id="resName" style="margin:10px 0 0; font-size:1.3rem;">Student</h2>
             <div class="res-score-huge" id="resScore">0%</div>
-            <div class="res-label">Accuracy Score</div>
+            <div style="color:var(--text-sec); margin-bottom:20px; font-weight:600;">Accuracy Score</div>
             <div class="stats-grid">
-                <div class="stat-box green"><i class="fa-solid fa-circle-check"></i><span id="resRight">0</span><span class="stat-label">Correct</span></div>
-                <div class="stat-box red"><i class="fa-solid fa-circle-xmark"></i><span id="resWrong">0</span><span class="stat-label">Wrong</span></div>
-                <div class="stat-box blue"><i class="fa-solid fa-list-check"></i><span id="resTotalQ">0</span><span class="stat-label">Total</span></div>
-                <div class="stat-box orange"><i class="fa-solid fa-hourglass-half"></i><span id="resTime">0s</span><span class="stat-label">Time</span></div>
+                <div class="stat-box green"><i class="fa-solid fa-circle-check"></i><span id="resRight">0</span>Correct</div>
+                <div class="stat-box red"><i class="fa-solid fa-circle-xmark"></i><span id="resWrong">0</span>Wrong</div>
+                <div class="stat-box blue"><i class="fa-solid fa-list-check"></i><span id="resTotalQ">0</span>Total</div>
+                <div class="stat-box orange"><i class="fa-solid fa-hourglass-half"></i><span id="resTime">0s</span>Time</div>
             </div>
         </div>
-        <div class="action-row fade-in"><button class="btn-glass" onclick="returnToHome()">Back</button><button class="primary-btn" onclick="shareResult()" style="flex:1;">Share</button></div>
+        <div class="action-row fade-in">
+            <button class="btn-glass" onclick="returnToHome()">Home</button>
+            <button class="primary-btn" onclick="shareResult()" style="flex:1;">Share</button>
+        </div>
+    </div>
+
+    <!-- ADMIN PANEL (HIDDEN) -->
+    <div id="adminPanel">
+        <div class="admin-header">
+            <h2 style="margin:0;">Admin Panel</h2>
+            <button class="nav-btn" onclick="closeAdmin()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="admin-content">
+            <!-- Add Topic -->
+            <div class="form-group">
+                <div class="form-title">1. Create Topic</div>
+                <input type="text" id="newTopicName" class="inp" placeholder="Topic Name (e.g. Electrician)">
+                <input type="text" id="newTopicId" class="inp" placeholder="Topic ID (e.g. elec1) - Must be unique">
+                <button class="btn-add" onclick="addTopic()">Add Topic</button>
+                <div id="topicList" style="margin-top:15px;"></div>
+            </div>
+
+            <!-- Add Question -->
+            <div class="form-group">
+                <div class="form-title">2. Add Question</div>
+                <select id="selTopic" class="inp"></select>
+                <textarea id="qInputText" class="inp" rows="3" placeholder="Question Text"></textarea>
+                <input type="text" id="qInputImg" class="inp" placeholder="Question Image URL (Optional)">
+                
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <input type="text" id="optA" class="inp" placeholder="Option A">
+                    <input type="text" id="optB" class="inp" placeholder="Option B">
+                    <input type="text" id="optC" class="inp" placeholder="Option C">
+                    <input type="text" id="optD" class="inp" placeholder="Option D">
+                </div>
+                
+                <input type="text" id="optImgA" class="inp" placeholder="Image for Option A (Optional)">
+                <input type="text" id="optImgB" class="inp" placeholder="Image for Option B (Optional)">
+                <input type="text" id="optImgC" class="inp" placeholder="Image for Option C (Optional)">
+                <input type="text" id="optImgD" class="inp" placeholder="Image for Option D (Optional)">
+
+                <select id="correctIdx" class="inp">
+                    <option value="0">Correct Answer: Option A</option>
+                    <option value="1">Correct Answer: Option B</option>
+                    <option value="2">Correct Answer: Option C</option>
+                    <option value="3">Correct Answer: Option D</option>
+                </select>
+                
+                <button class="btn-add" style="background:var(--success);" onclick="addQuestion()">Save Question</button>
+                <div style="margin-top:10px; font-size:0.8rem; color:var(--text-sec)">Note: Data is saved to your phone's storage.</div>
+            </div>
+            
+            <div class="form-group" style="border-color:var(--danger);">
+                <div class="form-title" style="color:var(--danger)">Danger Zone</div>
+                <button class="btn-add" style="background:var(--danger);" onclick="resetAllData()">Reset All Data</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        // CONFIG
+        // --- DATA & CONFIG ---
         const name = localStorage.getItem('iti_student_name') || "Student";
         const pic = localStorage.getItem('iti_student_pic') || `https://ui-avatars.com/api/?name=${name}&background=5b4dff&color=fff&font-size=0.5&bold=true`;
         let savedScores = JSON.parse(localStorage.getItem('iti_scores')) || {};
@@ -198,54 +250,36 @@
             document.getElementById('headPic').src = pic;
             document.getElementById('resName').innerText = name;
             document.getElementById('resPic').src = pic;
-            
             loadData();
             renderTopics();
-            
-            // --- NEW: LISTEN FOR ADMIN CHANGES ---
-            window.addEventListener('storage', (e) => {
-                // Agar Admin panel 'iti_topics' ya 'iti_qbank_full' ko change karega, to ye automatic reload karega
-                if(e.key === 'iti_topics' || e.key === 'iti_qbank_full') {
-                    console.log("Admin Data Updated! Refreshing...");
-                    loadData();
-                    renderTopics();
-                }
-            });
         };
-
-        // --- NEW: MANUAL REFRESH BUTTON LOGIC ---
-        function forceReload() {
-            loadData();
-            renderTopics();
-            // Animation feedback
-            const btn = document.querySelector('.nav-btn i');
-            btn.style.transition = 'transform 0.5s';
-            btn.style.transform = 'rotate(360deg)';
-            setTimeout(() => btn.style.transform = 'rotate(0deg)', 500);
-        }
 
         function loadData() {
             const t = localStorage.getItem('iti_topics');
-            // If data is null, use empty array instead of demo data to check connection
-            topics = t ? JSON.parse(t) : []; 
             const q = localStorage.getItem('iti_qbank_full');
-            qBank = q ? JSON.parse(q) : {};
+            
+            // Load saved data or empty arrays if nothing saved yet
+            topics = t ? JSON.parse(t) : []; 
+            qBank = q ? JSON.parse(q) : {}; 
+            
+            // If completely empty, you can initialize defaults, or keep empty for Admin to fill
+            if(topics.length === 0) {
+                 // Optional: Add default demo topic if nothing exists
+                 topics = [{id:'demo', name:'Demo', icon:'fa-star', color:'#5b4dff'}];
+                 qBank = {'demo': [{t:"Sample Question?", o:["A","B","C","D"], a:0}]};
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('iti_topics', JSON.stringify(topics));
+            localStorage.setItem('iti_qbank_full', JSON.stringify(qBank));
+            renderTopics();
         }
 
         function renderTopics() {
             const grid = document.getElementById('topicGrid');
             grid.innerHTML = '';
             
-            if(topics.length === 0) {
-                grid.innerHTML = `
-                <div style="text-align:center; padding:40px; grid-column:1/-1; color:var(--text-sec)">
-                    <i class="fa-solid fa-folder-open" style="font-size:3rem; margin-bottom:15px; opacity:0.3"></i><br>
-                    No topics found.<br>
-                    <span style="font-size:0.8rem">Check Admin Panel or click the Refresh button above.</span>
-                </div>`;
-                return;
-            }
-
             topics.forEach((t, i) => {
                 if(!qBank[t.id]) qBank[t.id] = [];
                 let c = qBank[t.id].length;
@@ -255,24 +289,125 @@
                 grid.innerHTML += `
                 <div class="card fade-in" style="animation-delay:${i*0.05}s" onclick="startQuiz('${t.id}')">
                     ${scoreHtml}
-                    <div class="card-icon" style="color:${t.color || '#5b4dff'}; background:${t.color ? t.color+'15' : '#eef2ff'}">
-                        <i class="fa-solid ${t.icon}"></i>
-                    </div>
-                    <div class="card-info">
-                        <h3>${t.name}</h3>
-                        <span>${c} Question${c!==1?'s':''}</span>
-                    </div>
-                    <i class="fa-solid fa-chevron-right card-arrow"></i>
+                    <div class="card-icon" style="color:${t.color}; background:${t.color}15"><i class="fa-solid ${t.icon}"></i></div>
+                    <div class="card-info"><h3>${t.name}</h3><span>${c} Questions</span></div>
                 </div>`;
             });
         }
 
-        // --- QUIZ LOGIC (Unchanged) ---
-        let activeQs=[], curr=0, score=0, timer, selectedAnswer=false, quizStartTime, currentTopicId="", correctVisualIndex=0;
+        // --- ADMIN PANEL LOGIC ---
+        let adminTapCount = 0;
+        function triggerAdmin() {
+            adminTapCount++;
+            if(adminTapCount === 5) {
+                adminTapCount = 0;
+                openAdmin();
+            }
+        }
 
+        function openAdmin() {
+            document.getElementById('adminPanel').style.display = 'block';
+            updateAdminUI();
+        }
+        function closeAdmin() { document.getElementById('adminPanel').style.display = 'none'; }
+
+        function updateAdminUI() {
+            const sel = document.getElementById('selTopic');
+            const list = document.getElementById('topicList');
+            sel.innerHTML = '<option value="">Select Topic...</option>';
+            list.innerHTML = '';
+
+            topics.forEach(t => {
+                sel.innerHTML += `<option value="${t.id}">${t.name}</option>`;
+                list.innerHTML += `<div style="padding:10px; border-bottom:1px solid #eee;">
+                    <b>${t.name}</b> (${qBank[t.id] ? qBank[t.id].length : 0} Qs)
+                    <button class="btn-del" onclick="deleteTopic('${t.id}')">Delete</button>
+                </div>`;
+            });
+        }
+
+        function addTopic() {
+            const name = document.getElementById('newTopicName').value;
+            const id = document.getElementById('newTopicId').value;
+            if(!name || !id) return alert("Enter Name and ID");
+            if(topics.find(t => t.id === id)) return alert("ID already exists");
+
+            topics.push({ id: id, name: name, icon: 'fa-book', color: '#5b4dff' });
+            qBank[id] = [];
+            saveData();
+            updateAdminUI();
+            alert("Topic Added!");
+            document.getElementById('newTopicName').value = "";
+            document.getElementById('newTopicId').value = "";
+        }
+
+        function deleteTopic(id) {
+            if(confirm("Delete this topic and all its questions?")) {
+                topics = topics.filter(t => t.id !== id);
+                delete qBank[id];
+                saveData();
+                updateAdminUI();
+            }
+        }
+
+        function addQuestion() {
+            const tid = document.getElementById('selTopic').value;
+            const text = document.getElementById('qInputText').value;
+            const optA = document.getElementById('optA').value;
+            const optB = document.getElementById('optB').value;
+            const optC = document.getElementById('optC').value;
+            const optD = document.getElementById('optD').value;
+            const correct = parseInt(document.getElementById('correctIdx').value);
+            
+            // Image inputs
+            const qImg = document.getElementById('qInputImg').value;
+            const oImgA = document.getElementById('optImgA').value;
+            const oImgB = document.getElementById('optImgB').value;
+            const oImgC = document.getElementById('optImgC').value;
+            const oImgD = document.getElementById('optImgD').value;
+
+            if(!tid || !text || !optA || !optB) return alert("Select topic and fill at least Question + 2 Options");
+
+            const newQ = {
+                t: text,
+                o: [optA, optB, optC, optD].filter(o => o !== ""), // Filter empty options if C/D are empty
+                a: correct,
+                qImg: qImg || null,
+                oImg: [oImgA, oImgB, oImgC, oImgD] // Array of option images
+            };
+
+            if(!qBank[tid]) qBank[tid] = [];
+            qBank[tid].push(newQ);
+            saveData();
+            alert("Question Saved!");
+            
+            // Clear inputs
+            document.getElementById('qInputText').value = "";
+            document.getElementById('qInputImg').value = "";
+            document.getElementById('optA').value = "";
+            document.getElementById('optB').value = "";
+            document.getElementById('optC').value = "";
+            document.getElementById('optD').value = "";
+            document.getElementById('optImgA').value = "";
+            document.getElementById('optImgB').value = "";
+            document.getElementById('optImgC').value = "";
+            document.getElementById('optImgD').value = "";
+            updateAdminUI();
+        }
+
+        function resetAllData() {
+            if(confirm("WARNING: This will delete ALL topics and questions permanently. Continue?")) {
+                localStorage.removeItem('iti_topics');
+                localStorage.removeItem('iti_qbank_full');
+                localStorage.removeItem('iti_scores');
+                location.reload();
+            }
+        }
+
+        // --- QUIZ LOGIC (Unchanged from prev version) ---
+        let activeQs=[], curr=0, score=0, timer, selectedAnswer=false, quizStartTime, currentTopicId="", correctVisualIndex=0;
         function startQuiz(id) {
-            loadData();
-            currentTopicId = id; 
+            loadData(); currentTopicId = id; 
             if(qBank[id] && qBank[id].length > 0) {
                 activeQs = [...qBank[id]].sort(() => Math.random() - 0.5);
                 curr=0; score=0; quizStartTime = Date.now();
@@ -280,24 +415,19 @@
                 document.getElementById('resultView').style.display = 'none'; 
                 document.getElementById('quizInterface').style.display = 'flex';
                 loadQ();
-            } else alert("This topic has no questions yet.");
+            } else alert("No questions in this topic yet.");
         }
-
         function loadQ() {
-            clearInterval(timer);
-            let time = 60; selectedAnswer = false;
+            clearInterval(timer); let time = 60; selectedAnswer = false;
             document.getElementById('timerText').innerText = "60s";
-            document.getElementById('nextBtn').style.opacity = "0.5";
-            document.getElementById('nextBtn').style.pointerEvents = "none";
+            document.getElementById('nextBtn').style.opacity = "0.5"; document.getElementById('nextBtn').style.pointerEvents = "none";
             document.getElementById('nextBtn').innerText = "Select Option";
 
             const q = activeQs[curr];
             document.getElementById('qIndex').innerText = `${curr + 1} / ${activeQs.length}`;
             document.getElementById('qText').innerText = q.t;
-            
             const qImg = document.getElementById('qImage');
             if(q.qImg) { qImg.src = q.qImg; qImg.style.display = 'block'; } else { qImg.style.display = 'none'; }
-            
             setTimeout(()=>document.getElementById('progressBar').style.width = `${((curr)/activeQs.length)*100}%`, 50);
 
             let opts = q.o.map((text, idx) => ({ text, idx, img: (q.oImg && q.oImg[idx]) ? q.oImg[idx] : null }));
@@ -308,67 +438,42 @@
                 if(item.idx === q.a) correctVisualIndex = vIdx;
                 let imgHtml = item.img ? `<img src="${item.img}" class="opt-image-preview">` : '';
                 list.innerHTML += `<div class="option-btn fade-in" style="animation-delay:${vIdx*0.05}s" onclick="check(this,${vIdx})">
-                    <div class="opt-char">${String.fromCharCode(65+vIdx)}</div>${imgHtml}<div>${item.text}</div>
-                </div>`;
+                    <div class="opt-char">${String.fromCharCode(65+vIdx)}</div>${imgHtml}<div>${item.text}</div></div>`;
             });
-
-            timer = setInterval(() => {
-                time--; document.getElementById('timerText').innerText = time + "s";
-                if(time<=0) { clearInterval(timer); autoFail(); }
-            }, 1000);
+            timer = setInterval(() => { time--; document.getElementById('timerText').innerText = time + "s"; if(time<=0) { clearInterval(timer); autoFail(); } }, 1000);
         }
-
         function check(el, vIdx) {
             if(selectedAnswer) return; selectedAnswer = true; clearInterval(timer);
             if(vIdx === correctVisualIndex) { el.classList.add('correct'); score++; if(window.confetti) confetti(); } 
             else { el.classList.add('wrong'); document.querySelectorAll('.option-btn')[correctVisualIndex].classList.add('correct'); }
             const btn = document.getElementById('nextBtn'); btn.style.opacity = "1"; btn.style.pointerEvents = "all";
-            btn.innerText = (curr === activeQs.length - 1) ? "View Results" : "Next Question";
+            btn.innerText = (curr === activeQs.length - 1) ? "See Results" : "Next Question";
         }
-
         function autoFail() {
-            selectedAnswer = true;
-            document.querySelectorAll('.option-btn')[correctVisualIndex].classList.add('correct');
+            selectedAnswer = true; document.querySelectorAll('.option-btn')[correctVisualIndex].classList.add('correct');
             const btn = document.getElementById('nextBtn'); btn.style.opacity = "1"; btn.style.pointerEvents = "all";
-            btn.innerText = (curr === activeQs.length - 1) ? "View Results" : "Next Question";
+            btn.innerText = (curr === activeQs.length - 1) ? "See Results" : "Next Question";
         }
-
-        function nextQuestion() {
-            if(curr < activeQs.length - 1) { curr++; loadQ(); } else showResult();
-        }
-
+        function nextQuestion() { if(curr < activeQs.length - 1) { curr++; loadQ(); } else showResult(); }
         function showResult() {
-            document.getElementById('quizInterface').style.display = 'none';
-            document.getElementById('resultView').style.display = 'block';
-            
+            document.getElementById('quizInterface').style.display = 'none'; document.getElementById('resultView').style.display = 'block';
             let finalScore = Math.round((score/activeQs.length)*100);
-            savedScores[currentTopicId] = finalScore;
-            localStorage.setItem('iti_scores', JSON.stringify(savedScores));
-
+            savedScores[currentTopicId] = finalScore; localStorage.setItem('iti_scores', JSON.stringify(savedScores));
             document.getElementById('resScore').innerText = finalScore + "%";
             document.getElementById('resRight').innerText = score;
             document.getElementById('resWrong').innerText = activeQs.length - score;
             document.getElementById('resTotalQ').innerText = activeQs.length;
-            let totalSeconds = Math.floor((Date.now() - quizStartTime) / 1000);
-            document.getElementById('resTime').innerText = `${totalSeconds}s`;
+            document.getElementById('resTime').innerText = Math.floor((Date.now() - quizStartTime) / 1000)+"s";
         }
-
         function returnToHome() {
-            document.getElementById('quizInterface').style.display = 'none';
-            document.getElementById('resultView').style.display = 'none';
-            document.getElementById('topicScreen').style.display = 'block';
-            loadData(); renderTopics(); 
+            document.getElementById('quizInterface').style.display = 'none'; document.getElementById('resultView').style.display = 'none';
+            document.getElementById('topicScreen').style.display = 'block'; loadData(); renderTopics(); 
         }
-
         function confirmExit(){ if(confirm("Quit Quiz?")) returnToHome(); }
-        
         function shareResult() {
             html2canvas(document.getElementById('captureArea'), { scale: 2 }).then(c => {
-                c.toBlob(b => {
-                    const f = new File([b], "result.png", { type: "image/png" });
-                    if(navigator.share) navigator.share({ files: [f] });
-                    else { const a = document.createElement('a'); a.href=c.toDataURL(); a.download="result.png"; a.click(); }
-                });
+                c.toBlob(b => { const f = new File([b], "result.png", { type: "image/png" });
+                if(navigator.share) navigator.share({ files: [f] }); else { const a = document.createElement('a'); a.href=c.toDataURL(); a.download="result.png"; a.click(); } });
             });
         }
     </script>
