@@ -1,3 +1,7 @@
+<!-- 
+    LOKHIPUR ITI PVT - MOCK TEST APP 
+    Save Feature Enabled
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,9 +51,6 @@
         .card-info span { font-size: 0.85rem; color: var(--text-sec); font-weight: 500; }
         .card-score { position: absolute; top: 12px; right: 12px; background: var(--success-bg); color: var(--success); font-weight: 700; font-size: 0.7rem; padding: 4px 10px; border-radius: 20px; }
 
-        /* LOADING */
-        #loadingSpinner { text-align: center; padding: 40px; color: var(--text-sec); font-weight: 600; }
-
         /* QUIZ UI */
         #quizInterface { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--surface); z-index: 100; display: none; flex-direction: column; }
         .quiz-header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); height: 70px; }
@@ -79,6 +80,7 @@
         .btn-add { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 10px; font-weight: 700; width: 100%; cursor: pointer; }
         .btn-del { background: var(--danger-bg); color: var(--danger); border: none; padding: 8px 12px; border-radius: 8px; font-weight: 700; cursor: pointer; float: right; }
         
+        /* RESULT CARD */
         .result-card { background: var(--surface); width: 100%; max-width: 420px; border-radius: 32px; overflow: hidden; box-shadow: var(--shadow-md); border: 1px solid var(--border); text-align: center; margin: 30px auto 20px; }
         .res-top { height: 150px; background: linear-gradient(135deg, #5b4dff 0%, #8b5cf6 100%); display: flex; justify-content: center; align-items: center; }
         .res-avatar { width: 80px; height: 80px; border-radius: 50%; border: 5px solid var(--surface); margin: -40px auto 10px; background: #fff; position: relative; object-fit: cover; }
@@ -114,12 +116,6 @@
             <h2 class="hero-title">Let's practice! 👋</h2>
             <div class="hero-sub">Tap profile 5 times to Open Admin Panel.</div>
         </div>
-
-        <div id="loadingSpinner">
-            <i class="fa-solid fa-circle-notch fa-spin fa-2x"></i>
-            <p>Syncing Questions...</p>
-        </div>
-
         <div class="grid-container" id="topicGrid"></div>
     </div>
 
@@ -164,7 +160,7 @@
     <!-- ADMIN PANEL -->
     <div id="adminPanel">
         <div class="admin-header">
-            <h2 style="margin:0;">Admin (Online)</h2>
+            <h2 style="margin:0;">Admin Panel</h2>
             <button class="nav-btn" onclick="closeAdmin()"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="admin-content">
@@ -173,7 +169,7 @@
                 <div class="form-title">1. Create Topic</div>
                 <input type="text" id="newTopicName" class="inp" placeholder="Topic Name">
                 <input type="text" id="newTopicId" class="inp" placeholder="Topic ID (unique)">
-                <button class="btn-add" onclick="window.addTopic()">Add Topic to Cloud</button>
+                <button class="btn-add" onclick="addTopic()">Add Topic</button>
                 <div id="topicList" style="margin-top:15px;"></div>
             </div>
 
@@ -198,92 +194,146 @@
                     <option value="2">Correct: Option C</option>
                     <option value="3">Correct: Option D</option>
                 </select>
-                <button class="btn-add" style="background:var(--success);" onclick="window.addQuestion()">Save to Cloud</button>
+                <button class="btn-add" style="background:var(--success);" onclick="addQuestion()">Save Question (Temp)</button>
             </div>
             
+            <!-- UPDATE SAVE FEATURE -->
             <div class="form-group" style="border-color:var(--primary); background:#eff6ff;">
-                <p style="font-size:0.85rem; color:var(--text-sec); text-align:center;">
-                    <i class="fa-solid fa-cloud"></i> Connected to Firebase. All changes save instantly for everyone.
+                <div class="form-title">3. PERMANENT SAVE</div>
+                <p style="font-size:0.85rem; color:var(--text-sec);">
+                    Questions are currently saved on this device only. To share with students:
+                    <br><b>1. Add all questions.</b>
+                    <br><b>2. Click the button below.</b>
+                    <br><b>3. Send the downloaded file to students.</b>
                 </p>
+                <button class="btn-add" style="background:#1e293b; padding:15px; font-size:1.1rem;" onclick="downloadUpdatedApp()">
+                    <i class="fa-solid fa-download"></i> Download Updated App
+                </button>
+            </div>
+
+            <div class="form-group" style="border-color:var(--danger);">
+                <button class="btn-add" style="background:var(--danger);" onclick="resetAllData()">Reset All Data</button>
             </div>
         </div>
     </div>
 
-    <!-- FIREBASE MODULE -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-        import { getDatabase, ref, set, onValue, remove, get } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+    <script>
+        // <DATA_START> - Do not remove this comment.
+        var defaultTopics = [{"id":"demo","name":"Demo Topic","icon":"fa-star","color":"#5b4dff"}];
+        var defaultQBank = {"demo":[{"t":"What is the unit of Voltage?","o":["Ampere","Volt","Ohm","Watt"],"a":1,"qImg":"","oImg":["","","",""]}]};
+        // <DATA_END> - Do not remove this comment.
 
-        // CONFIG
-        const firebaseConfig = {
-            apiKey: "AIzaSyCZQoxcRbowOLLjfRcV8c0vfiTLsfc2Gys",
-            authDomain: "movie-2-f1b16.firebaseapp.com",
-            databaseURL: "https://movie-2-f1b16-default-rtdb.firebaseio.com",
-            projectId: "movie-2-f1b16"
+        const name = localStorage.getItem('iti_student_name') || "Student";
+        const pic = localStorage.getItem('iti_student_pic') || `https://ui-avatars.com/api/?name=${name}&background=5b4dff&color=fff&font-size=0.5&bold=true`;
+        let savedScores = JSON.parse(localStorage.getItem('iti_scores')) || {};
+        
+        // Initialize with Defaults, then check LocalStorage
+        let topics = JSON.parse(JSON.stringify(defaultTopics));
+        let qBank = JSON.parse(JSON.stringify(defaultQBank));
+
+        window.onload = () => {
+            document.getElementById('headerName').innerText = name;
+            document.getElementById('headPic').src = pic;
+            document.getElementById('resName').innerText = name;
+            document.getElementById('resPic').src = pic;
+            loadData();
+            renderTopics();
         };
 
-        // INIT
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+        function loadData() {
+            // Merge LocalStorage if it exists (for current admin session)
+            const t = localStorage.getItem('iti_topics');
+            const q = localStorage.getItem('iti_qbank_full');
+            if(t) topics = JSON.parse(t);
+            if(q) qBank = JSON.parse(q);
+        }
 
-        // GLOBALS
-        let topics = [];
-        let qBank = {};
+        function saveData() {
+            localStorage.setItem('iti_topics', JSON.stringify(topics));
+            localStorage.setItem('iti_qbank_full', JSON.stringify(qBank));
+            renderTopics();
+        }
 
-        // 1. LISTEN FOR DATA (Realtime)
-        const topicsRef = ref(db, 'topics');
-        const qBankRef = ref(db, 'qBank');
+        // --- NEW: DOWNLOAD SELF-CONTAINED FILE ---
+        function downloadUpdatedApp() {
+            // 1. Get current HTML
+            let htmlContent = document.documentElement.outerHTML;
+            
+            // 2. Prepare new data strings (serialize the CURRENT variables)
+            const newTopicsStr = `var defaultTopics = ${JSON.stringify(topics)};`;
+            const newQBankStr = `var defaultQBank = ${JSON.stringify(qBank)};`;
+            
+            // 3. Find the markers and replace content between them
+            // We use regex to be safe about whitespace
+            const startMarker = "// <DATA_START> - Do not remove this comment.";
+            const endMarker = "// <DATA_END> - Do not remove this comment.";
+            
+            const startPos = htmlContent.indexOf(startMarker);
+            const endPos = htmlContent.indexOf(endMarker);
+            
+            if(startPos !== -1 && endPos !== -1) {
+                // Construct new HTML: Before marker + Marker + New Data + End Marker + After
+                const before = htmlContent.substring(0, startPos + startMarker.length);
+                const after = htmlContent.substring(endPos);
+                
+                const newHtml = `<!DOCTYPE html>\n${before}\n        ${newTopicsStr}\n        ${newQBankStr}\n        ${after}`;
+                
+                // 4. Trigger Download
+                const blob = new Blob([newHtml], { type: 'text/html' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = "LOKHIPUR_ITI_Updated.html";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                alert("SUCCESS!\n\n1. A new file 'LOKHIPUR_ITI_Updated.html' has been downloaded.\n2. Rename it and send it to your students.\n3. They will see all the questions you just added.");
+            } else {
+                alert("Error: Data markers not found. Cannot save permanent file.");
+            }
+        }
 
-        onValue(topicsRef, (snapshot) => {
-            document.getElementById('loadingSpinner').style.display = 'none';
-            const data = snapshot.val();
-            // Convert Object back to Array for our app logic
-            topics = data ? Object.values(data) : [];
-            // Expose to window for UI functions
-            window.appTopics = topics;
-            window.renderTopics();
-            window.updateAdminUI();
-        });
+        // --- ADMIN FUNCTIONS ---
+        let adminTapCount = 0;
+        function triggerAdmin() { adminTapCount++; if(adminTapCount === 5) { adminTapCount = 0; openAdmin(); } }
+        function openAdmin() { document.getElementById('adminPanel').style.display = 'block'; updateAdminUI(); }
+        function closeAdmin() { document.getElementById('adminPanel').style.display = 'none'; }
 
-        onValue(qBankRef, (snapshot) => {
-            qBank = snapshot.val() || {};
-            // Expose to window
-            window.appQBank = qBank;
-            window.updateAdminUI();
-        });
+        function updateAdminUI() {
+            const sel = document.getElementById('selTopic');
+            const list = document.getElementById('topicList');
+            sel.innerHTML = '<option value="">Select Topic...</option>';
+            list.innerHTML = '';
+            topics.forEach(t => {
+                sel.innerHTML += `<option value="${t.id}">${t.name}</option>`;
+                list.innerHTML += `<div style="padding:10px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center;"><span><b>${t.name}</b> (${qBank[t.id]?.length || 0} Qs)</span> <button class="btn-del" onclick="deleteTopic('${t.id}')">Del</button></div>`;
+            });
+        }
 
-        // 2. EXPORT FUNCTIONS FOR ADMIN PANEL (Available to window)
-        window.addTopic = function() {
+        function addTopic() {
             const name = document.getElementById('newTopicName').value;
             const id = document.getElementById('newTopicId').value;
             if(!name || !id) return alert("Enter Name and ID");
-            
-            // Check existing
             if(topics.find(t => t.id === id)) return alert("ID Exists");
+            topics.push({ id: id, name: name, icon: 'fa-book', color: '#5b4dff' });
+            qBank[id] = [];
+            saveData(); updateAdminUI();
+            alert("Topic Added!");
+        }
 
-            // Write to Firebase
-            set(ref(db, 'topics/' + id), {
-                id: id, name: name, icon: 'fa-book', color: '#5b4dff'
-            }).then(() => {
-                alert("Topic Added to Cloud!");
-                document.getElementById('newTopicName').value = "";
-                document.getElementById('newTopicId').value = "";
-            });
-        };
-
-        window.deleteTopic = function(id) {
-            if(confirm("Delete topic and its questions from Cloud?")) {
-                remove(ref(db, 'topics/' + id));
-                remove(ref(db, 'qBank/' + id));
+        function deleteTopic(id) {
+            if(confirm("Delete topic?")) {
+                topics = topics.filter(t => t.id !== id);
+                delete qBank[id];
+                saveData(); updateAdminUI();
             }
-        };
+        }
 
-        window.addQuestion = function() {
+        function addQuestion() {
             const tid = document.getElementById('selTopic').value;
             const text = document.getElementById('qInputText').value;
             if(!tid || !text) return alert("Select topic and enter text");
             
-            // Clean inputs
             const opts = [
                 document.getElementById('optA').value,
                 document.getElementById('optB').value,
@@ -291,7 +341,7 @@
                 document.getElementById('optD').value
             ].filter(o => o !== "");
 
-             const oImgs = [
+            const oImgs = [
                 document.getElementById('optImgA').value,
                 document.getElementById('optImgB').value,
                 document.getElementById('optImgC').value,
@@ -302,104 +352,40 @@
                 t: text,
                 o: opts,
                 a: parseInt(document.getElementById('correctIdx').value),
-                qImg: document.getElementById('qInputImg').value || null,
+                qImg: document.getElementById('qInputImg').value || "",
                 oImg: oImgs
             };
             
-            // Logic: Read current array -> push -> write back
-            get(ref(db, 'qBank/' + tid)).then((snapshot) => {
-                let currentQs = snapshot.val() || [];
-                currentQs.push(newQ);
-                
-                set(ref(db, 'qBank/' + tid), currentQs).then(() => {
-                    alert("Question Saved to Cloud!");
-                    // Clear fields
-                    document.getElementById('qInputText').value = "";
-                    document.getElementById('qInputImg').value = "";
-                    document.getElementById('optA').value = "";
-                    document.getElementById('optB').value = "";
-                    document.getElementById('optC').value = "";
-                    document.getElementById('optD').value = "";
-                    document.getElementById('optImgA').value = "";
-                    document.getElementById('optImgB').value = "";
-                    document.getElementById('optImgC').value = "";
-                    document.getElementById('optImgD').value = "";
-                });
-            });
-        };
+            if(!qBank[tid]) qBank[tid] = [];
+            qBank[tid].push(newQ);
+            saveData(); 
+            updateAdminUI();
+            alert("Question Saved (Locally). Remember to DOWNLOAD UPDATED APP to share.");
+        }
 
-        // Initialize Global Arrays for safety
-        window.appTopics = [];
-        window.appQBank = {};
+        function resetAllData() {
+            if(confirm("Delete ALL data and return to defaults?")) {
+                localStorage.removeItem('iti_topics');
+                localStorage.removeItem('iti_qbank_full');
+                location.reload();
+            }
+        }
 
-    </script>
-
-    <!-- STANDARD JS LOGIC -->
-    <script>
-        const name = localStorage.getItem('iti_student_name') || "Student";
-        const pic = localStorage.getItem('iti_student_pic') || `https://ui-avatars.com/api/?name=${name}&background=5b4dff&color=fff&font-size=0.5&bold=true`;
-        let savedScores = JSON.parse(localStorage.getItem('iti_scores')) || {};
-
-        window.onload = () => {
-            document.getElementById('headerName').innerText = name;
-            document.getElementById('headPic').src = pic;
-            document.getElementById('resName').innerText = name;
-            document.getElementById('resPic').src = pic;
-            // renderTopics is called by Firebase listener when data arrives
-        };
-
-        // UI RENDER
-        window.renderTopics = function() {
+        // --- CORE UI & QUIZ ---
+        function renderTopics() {
             const grid = document.getElementById('topicGrid');
             grid.innerHTML = '';
-            
-            const topics = window.appTopics || [];
-            const qBank = window.appQBank || {};
-
-            if(topics.length === 0) {
-                // grid.innerHTML = `<div style="text-align:center;width:100%;color:gray">Waiting for data...</div>`;
-                return;
-            }
-
             topics.forEach((t, i) => {
-                let c = qBank[t.id] ? qBank[t.id].length : 0;
+                if(!qBank[t.id]) qBank[t.id] = [];
+                let c = qBank[t.id].length;
                 let lastScore = savedScores[t.id];
                 let scoreHtml = lastScore !== undefined ? `<div class="card-score">${lastScore}%</div>` : '';
                 grid.innerHTML += `<div class="card fade-in" style="animation-delay:${i*0.05}s" onclick="startQuiz('${t.id}')">${scoreHtml}<div class="card-icon" style="color:${t.color}; background:${t.color}15"><i class="fa-solid ${t.icon}"></i></div><div class="card-info"><h3>${t.name}</h3><span>${c} Questions</span></div></div>`;
             });
         }
-
-        // ADMIN UI UPDATE
-        window.updateAdminUI = function() {
-            const sel = document.getElementById('selTopic');
-            const list = document.getElementById('topicList');
-            const topics = window.appTopics || [];
-            const qBank = window.appQBank || {};
-            
-            sel.innerHTML = '<option value="">Select Topic...</option>';
-            list.innerHTML = '';
-            topics.forEach(t => {
-                sel.innerHTML += `<option value="${t.id}">${t.name}</option>`;
-                list.innerHTML += `<div style="padding:10px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center;"><span><b>${t.name}</b> (${qBank[t.id]?.length || 0} Qs)</span> <button class="btn-del" onclick="window.deleteTopic('${t.id}')">Del</button></div>`;
-            });
-        }
-
-        // NAVIGATION
-        let adminTapCount = 0;
-        function triggerAdmin() { adminTapCount++; if(adminTapCount === 5) { adminTapCount = 0; openAdmin(); } }
-        function openAdmin() { document.getElementById('adminPanel').style.display = 'block'; window.updateAdminUI(); }
-        function closeAdmin() { document.getElementById('adminPanel').style.display = 'none'; }
-        function returnToHome() {
-            document.getElementById('quizInterface').style.display = 'none'; document.getElementById('resultView').style.display = 'none';
-            document.getElementById('topicScreen').style.display = 'block'; 
-        }
-        function confirmExit(){ if(confirm("Quit Quiz?")) returnToHome(); }
-
-        // QUIZ ENGINE
-        let activeQs=[], curr=0, score=0, timer, selectedAnswer=false, quizStartTime, currentTopicId="", correctVisualIndex=0;
         
+        let activeQs=[], curr=0, score=0, timer, selectedAnswer=false, quizStartTime, currentTopicId="", correctVisualIndex=0;
         function startQuiz(id) {
-            const qBank = window.appQBank || {};
             currentTopicId = id; 
             if(qBank[id] && qBank[id].length > 0) {
                 activeQs = [...qBank[id]].sort(() => Math.random() - 0.5);
@@ -408,9 +394,8 @@
                 document.getElementById('resultView').style.display = 'none'; 
                 document.getElementById('quizInterface').style.display = 'flex';
                 loadQ();
-            } else alert("No questions found in cloud for this topic.");
+            } else alert("No questions in this topic.");
         }
-        
         function loadQ() {
             clearInterval(timer); let time = 60; selectedAnswer = false;
             document.getElementById('timerText').innerText = "60s";
@@ -420,22 +405,22 @@
             document.getElementById('qIndex').innerText = `${curr + 1} / ${activeQs.length}`;
             document.getElementById('qText').innerText = q.t;
             const qImg = document.getElementById('qImage');
-            if(q.qImg) { qImg.src = q.qImg; qImg.style.display = 'block'; } else { qImg.style.display = 'none'; }
-            
+            if(q.qImg && q.qImg.trim() !== "") { qImg.src = q.qImg; qImg.style.display = 'block'; } else { qImg.style.display = 'none'; }
             setTimeout(()=>document.getElementById('progressBar').style.width = `${((curr)/activeQs.length)*100}%`, 50);
 
-            let opts = q.o.map((text, idx) => ({ text, idx, img: (q.oImg && q.oImg[idx]) ? q.oImg[idx] : null }));
+            // Create option objects
+            let opts = q.o.map((text, idx) => ({ text, idx, img: (q.oImg && q.oImg[idx]) ? q.oImg[idx] : "" }));
+            // Shuffle them
             opts.sort(() => Math.random() - 0.5);
 
             const list = document.getElementById('optionsList'); list.innerHTML = '';
             opts.forEach((item, vIdx) => {
                 if(item.idx === q.a) correctVisualIndex = vIdx;
-                let imgHtml = item.img ? `<img src="${item.img}" class="opt-image-preview">` : '';
+                let imgHtml = (item.img && item.img.trim() !== "") ? `<img src="${item.img}" class="opt-image-preview">` : '';
                 list.innerHTML += `<div class="option-btn fade-in" style="animation-delay:${vIdx*0.05}s" onclick="check(this,${vIdx})"><div class="opt-char">${String.fromCharCode(65+vIdx)}</div>${imgHtml}<div>${item.text}</div></div>`;
             });
             timer = setInterval(() => { time--; document.getElementById('timerText').innerText = time + "s"; if(time<=0) { clearInterval(timer); autoFail(); } }, 1000);
         }
-        
         function check(el, vIdx) {
             if(selectedAnswer) return; selectedAnswer = true; clearInterval(timer);
             if(vIdx === correctVisualIndex) { el.classList.add('correct'); score++; if(window.confetti) confetti(); } 
@@ -458,6 +443,11 @@
             document.getElementById('resTotalQ').innerText = activeQs.length;
             document.getElementById('resTime').innerText = Math.floor((Date.now() - quizStartTime) / 1000)+"s";
         }
+        function returnToHome() {
+            document.getElementById('quizInterface').style.display = 'none'; document.getElementById('resultView').style.display = 'none';
+            document.getElementById('topicScreen').style.display = 'block'; renderTopics(); 
+        }
+        function confirmExit(){ if(confirm("Quit Quiz?")) returnToHome(); }
         function shareResult() {
             html2canvas(document.getElementById('captureArea'), { scale: 2 }).then(c => {
                 c.toBlob(b => { const f = new File([b], "result.png", { type: "image/png" });
