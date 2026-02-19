@@ -1,8 +1,11 @@
-<!-- START OF FILE -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- Prevent Caching (Ensures students see latest version if hosted) -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LOKHIPUR ITI PVT</title>
     
@@ -87,10 +90,12 @@
         .green { background: var(--success-bg); color: var(--success); } .red { background: var(--danger-bg); color: var(--danger); }
         .blue { background: var(--primary-light); color: var(--primary); } .orange { background: #fffbeb; color: #f59e0b; }
         .action-row { width: 100%; max-width: 420px; display: flex; gap: 12px; margin: 0 auto 40px; padding: 0 20px; }
+        
+        /* Anim */
         .fade-in { animation: fadeIn 0.4s ease-out backwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* PULSE ANIMATION FOR SAVE BTN */
+        /* SAVE BUTTON PULSE */
         @keyframes pulse-black { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(30, 41, 59, 0.7); } 70% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(30, 41, 59, 0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(30, 41, 59, 0); } }
         .btn-pulse { animation: pulse-black 2s infinite; }
     </style>
@@ -200,15 +205,13 @@
             
             <!-- UPDATE SAVE FEATURE -->
             <div class="form-group" style="border-color:var(--primary); background:#eff6ff;">
-                <div class="form-title">3. FINAL SAVE (VERY IMPORTANT)</div>
-                <p style="font-size:0.85rem; color:var(--text-sec); line-height:1.5;">
-                    Adding questions only saves them in <b>your browser</b>. To save them permanently and share with others:
-                    <br><br>
-                    1. Click <b>Download Updated App</b> below.
-                    <br>
-                    2. A new file will be downloaded (e.g., LOKHIPUR_ITI_v2.html).
-                    <br>
-                    3. <b>Send THAT new file</b> to students.
+                <div class="form-title">3. PERMANENT SAVE & SHARE</div>
+                <p style="font-size:0.9rem; color:var(--text-sec); line-height:1.6;">
+                    <b>Important:</b> Questions are currently temporary. To share them with students:
+                    <br>1. Add all questions.
+                    <br>2. Click the <b>Download</b> button below.
+                    <br>3. A new file (<b>LOKHIPUR_ITI_v2.html</b>) will be saved.
+                    <br>4. <b>Send the NEW file</b> to your students.
                 </p>
                 <button class="btn-add btn-pulse" style="background:#1e293b; padding:15px; font-size:1.1rem;" onclick="downloadUpdatedApp()">
                     <i class="fa-solid fa-download"></i> Download Updated App
@@ -216,7 +219,7 @@
             </div>
 
             <div class="form-group" style="border-color:var(--danger);">
-                <button class="btn-add" style="background:var(--danger);" onclick="resetAllData()">Reset All Data</button>
+                <button class="btn-add" style="background:var(--danger);" onclick="resetAllData()">Reset / Clear Data</button>
             </div>
         </div>
     </div>
@@ -231,44 +234,55 @@
         const pic = localStorage.getItem('iti_student_pic') || `https://ui-avatars.com/api/?name=${name}&background=5b4dff&color=fff&font-size=0.5&bold=true`;
         let savedScores = JSON.parse(localStorage.getItem('iti_scores')) || {};
         
-        // Initialize with Defaults, then check LocalStorage
-        let topics = JSON.parse(JSON.stringify(defaultTopics));
-        let qBank = JSON.parse(JSON.stringify(defaultQBank));
+        // Initialize variables
+        let topics = [];
+        let qBank = {};
 
         window.onload = () => {
             document.getElementById('headerName').innerText = name;
             document.getElementById('headPic').src = pic;
             document.getElementById('resName').innerText = name;
             document.getElementById('resPic').src = pic;
-            loadData();
+            
+            // PRIORITY: Load from hardcoded file first (this ensures students see new questions)
+            topics = JSON.parse(JSON.stringify(defaultTopics));
+            qBank = JSON.parse(JSON.stringify(defaultQBank));
+            
+            // OPTIONAL: If Admin is working, merge local changes. 
+            // But for students, we rely on the file content.
+            const t = localStorage.getItem('iti_topics');
+            const q = localStorage.getItem('iti_qbank_full');
+            
+            if(t && q) {
+                // We only use LocalStorage if it has MORE topics than default
+                // This is a simple check to see if Admin added something new locally
+                let localT = JSON.parse(t);
+                if(localT.length >= topics.length) {
+                    topics = localT;
+                    qBank = JSON.parse(q);
+                }
+            }
+
             renderTopics();
         };
 
-        function loadData() {
-            // Check LocalStorage. If empty, we use the default hardcoded data (which comes from <DATA_START>)
-            const t = localStorage.getItem('iti_topics');
-            const q = localStorage.getItem('iti_qbank_full');
-            if(t && t !== "[]") topics = JSON.parse(t);
-            if(q && q !== "{}") qBank = JSON.parse(q);
-        }
-
         function saveData() {
-            // Saves to temporary browser memory so you don't lose data on refresh
+            // Save to LocalStorage for the Admin's session
             localStorage.setItem('iti_topics', JSON.stringify(topics));
             localStorage.setItem('iti_qbank_full', JSON.stringify(qBank));
             renderTopics();
         }
 
-        // --- NEW: DOWNLOAD SELF-CONTAINED FILE ---
+        // --- THE MAGIC SAVE FUNCTION ---
         function downloadUpdatedApp() {
-            // 1. Get current HTML
+            // 1. Get current HTML content
             let htmlContent = document.documentElement.outerHTML;
             
-            // 2. Prepare new data strings (serialize the CURRENT variables)
+            // 2. Prepare new data strings from the current variables
             const newTopicsStr = `var defaultTopics = ${JSON.stringify(topics)};`;
             const newQBankStr = `var defaultQBank = ${JSON.stringify(qBank)};`;
             
-            // 3. Find the markers and replace content between them
+            // 3. Find markers
             const startMarker = "// <DATA_START>";
             const endMarker = "// <DATA_END>";
             
@@ -276,13 +290,13 @@
             const endPos = htmlContent.indexOf(endMarker);
             
             if(startPos !== -1 && endPos !== -1) {
-                // Construct new HTML: Before marker + Marker + New Data + End Marker + After
+                // 4. Inject new data into the HTML
                 const before = htmlContent.substring(0, startPos + startMarker.length);
                 const after = htmlContent.substring(endPos);
                 
                 const newHtml = `<!DOCTYPE html>\n${before}\n        ${newTopicsStr}\n        ${newQBankStr}\n        ${after}`;
                 
-                // 4. Trigger Download
+                // 5. Trigger Download
                 const blob = new Blob([newHtml], { type: 'text/html' });
                 const a = document.createElement('a');
                 a.href = URL.createObjectURL(blob);
@@ -291,9 +305,9 @@
                 a.click();
                 document.body.removeChild(a);
                 
-                alert("FILE DOWNLOADED!\n\nPlease check your Downloads folder for 'LOKHIPUR_ITI_v2.html'.\n\nSend THIS new file to students.");
+                alert("SUCCESS! New App File Downloaded.\n\nSend 'LOKHIPUR_ITI_v2.html' to your students.");
             } else {
-                alert("Error: Data markers not found. Please do not edit the code comments.");
+                alert("Error: Save markers missing.");
             }
         }
 
@@ -364,11 +378,11 @@
             qBank[tid].push(newQ);
             saveData(); 
             updateAdminUI();
-            alert("Question Added to List!\n\nIMPORTANT: When finished adding all questions, click 'Download Updated App' to permanently save.");
+            alert("Question Added! Remember to DOWNLOAD to save permanently.");
         }
 
         function resetAllData() {
-            if(confirm("Delete ALL data and return to defaults?")) {
+            if(confirm("Reset all data to defaults?")) {
                 localStorage.removeItem('iti_topics');
                 localStorage.removeItem('iti_qbank_full');
                 location.reload();
