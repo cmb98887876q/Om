@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>LOKHIPUR ITI PVT</title>
+    <title>LOKHIPUR ITI - Quiz App</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,15 +12,12 @@
 
     <style>
         :root {
-            /* Upgraded Color Palette */
             --primary: #5b4dff; --primary-dark: #3a2bc2; --primary-light: #eceaff;
             --secondary: #8b5cf6; 
             --success: #10b981; --success-bg: #ecfdf5;
             --danger: #ef4444; --danger-bg: #fef2f2;
             --text-main: #0f172a; --text-sec: #64748b;
             --bg-body: #f4f7fb; --surface: #ffffff; --border: #e2e8f0;
-            
-            /* Modern Shadows & Radii */
             --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
             --shadow-md: 0 8px 16px rgba(0,0,0,0.06);
             --shadow-lg: 0 16px 32px rgba(91, 77, 255, 0.08);
@@ -32,7 +29,6 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
         body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-main); background-color: var(--bg-body); height: 100vh; overflow: hidden; }
 
-        /* SCROLLBAR STYLING */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
@@ -50,8 +46,7 @@
             font-size: 1.1rem; cursor: pointer; color: var(--text-main); box-shadow: var(--shadow-sm);
             transition: all 0.2s ease;
         }
-        .nav-btn:hover { background: var(--bg-body); transform: translateY(-2px); }
-        .nav-btn:active { transform: translateY(0); }
+        .nav-btn:active { transform: translateY(0) scale(0.95); }
         .title-group { display: flex; flex-direction: column; }
         .brand-subtitle { font-size: 0.65rem; color: var(--secondary); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
         .brand-title { font-size: 1.35rem; font-weight: 800; margin: 0; color: var(--text-main); line-height: 1; letter-spacing: -0.5px; }
@@ -61,8 +56,7 @@
             background: var(--surface); border: 1px solid var(--border); border-radius: 50px; 
             box-shadow: var(--shadow-sm); cursor: pointer; transition: all 0.2s;
         }
-        .profile-pill:hover { border-color: var(--primary-light); box-shadow: var(--shadow-md); }
-        .profile-name { font-weight: 700; font-size: 0.95rem; color: var(--text-main); max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .profile-name { font-weight: 700; font-size: 0.95rem; color: var(--text-main); max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .profile-img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; display: block; background: var(--primary-light); border: 2px solid var(--surface); }
 
         /* DASHBOARD */
@@ -77,8 +71,7 @@
             box-shadow: var(--shadow-md); cursor: pointer; position: relative; overflow: hidden;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
         }
-        .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
-        .card:active { transform: scale(0.98) translateY(0); }
+        .card:active { transform: scale(0.96) translateY(0); }
         .card-icon { width: 64px; height: 64px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; flex-shrink: 0; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05); }
         .card-info h3 { margin: 0 0 6px; font-size: 1.15rem; font-weight: 800; color: var(--text-main); }
         .card-info span { font-size: 0.9rem; color: var(--text-sec); font-weight: 600; background: var(--bg-body); padding: 4px 10px; border-radius: 8px; }
@@ -88,16 +81,8 @@
         #quizInterface { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 100; display: none; flex-direction: column; }
         .quiz-header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; background: var(--surface); border-bottom: 1px solid var(--border); height: 75px; }
         
-        .timer-badge { 
-            background: var(--surface); padding: 8px 18px; border-radius: 30px; 
-            font-weight: 800; font-size: 1rem; border: 2px solid var(--border); 
-            display: flex; align-items: center; gap: 8px; transition: all 0.3s;
-        }
-        @keyframes pulseRed { 
-            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); border-color: var(--danger); color: var(--danger); } 
-            70% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); border-color: var(--danger); color: var(--danger); } 
-            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); border-color: var(--danger); color: var(--danger); } 
-        }
+        .timer-badge { background: var(--surface); padding: 8px 18px; border-radius: 30px; font-weight: 800; font-size: 1rem; border: 2px solid var(--border); display: flex; align-items: center; gap: 8px; transition: all 0.3s; }
+        @keyframes pulseRed { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); border-color: var(--danger); color: var(--danger); } 70% { box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); border-color: var(--danger); color: var(--danger); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); border-color: var(--danger); color: var(--danger); } }
         .pulse-red { animation: pulseRed 1s infinite; color: var(--danger); }
 
         .progress-container { height: 6px; background: var(--border); width: 100%; }
@@ -109,13 +94,7 @@
         .q-text { font-size: 1.4rem; font-weight: 800; margin: 0 0 25px; line-height: 1.4; color: var(--text-main); }
         .q-image-img { max-width: 100%; height: auto; max-height: 280px; border-radius: var(--radius-md); border: 2px solid var(--border); margin-bottom: 25px; display: none; object-fit: cover; box-shadow: var(--shadow-sm); }
         
-        .option-btn { 
-            background: var(--surface); padding: 18px; border-radius: var(--radius-md); 
-            margin-bottom: 16px; cursor: pointer; display: flex; align-items: center; 
-            gap: 16px; border: 2px solid transparent; box-shadow: var(--shadow-sm); 
-            flex-wrap: wrap; transition: all 0.2s ease; font-weight: 600; font-size: 1.05rem;
-        }
-        .option-btn:hover:not(.correct):not(.wrong) { border-color: var(--primary); background: var(--primary-light); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .option-btn { background: var(--surface); padding: 18px; border-radius: var(--radius-md); margin-bottom: 16px; cursor: pointer; display: flex; align-items: center; gap: 16px; border: 2px solid transparent; box-shadow: var(--shadow-sm); flex-wrap: wrap; transition: all 0.2s ease; font-weight: 600; font-size: 1.05rem; }
         .option-btn:active { transform: scale(0.98); }
         .opt-char { width: 40px; height: 40px; background: var(--bg-body); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; border: 1px solid var(--border); flex-shrink: 0; color: var(--text-sec); }
         .opt-image-preview { width: 200px; height: 200px; border-radius: 12px; object-fit: cover; border: 1px solid var(--border); flex-shrink: 0; background: #fff; }
@@ -126,20 +105,12 @@
         .option-btn.wrong .opt-char { background: var(--danger); color: white; border-color: var(--danger); }
         
         .quiz-footer { padding: 20px; border-top: 1px solid var(--border); background: var(--surface); display: flex; justify-content: center; }
-        
-        .primary-btn { 
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); 
-            color: white; border: none; padding: 18px 32px; border-radius: var(--radius-md); 
-            font-weight: 800; width: 100%; font-size: 1.1rem; cursor: pointer; 
-            box-shadow: var(--shadow-btn); transition: all 0.2s ease; letter-spacing: 0.5px;
-        }
-        .primary-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(91, 77, 255, 0.35); }
-        .primary-btn:active { transform: translateY(0); box-shadow: var(--shadow-btn); }
+        .primary-btn { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: none; padding: 18px 32px; border-radius: var(--radius-md); font-weight: 800; width: 100%; font-size: 1.1rem; cursor: pointer; box-shadow: var(--shadow-btn); transition: all 0.2s ease; letter-spacing: 0.5px; }
+        .primary-btn:active { transform: scale(0.98); box-shadow: var(--shadow-btn); }
 
         /* RESULT & ADMIN */
         #resultView, #adminPanel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 200; overflow-y: auto; }
         
-        /* ADMIN PANEL */
         .admin-header { padding: 20px; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; box-shadow: var(--shadow-sm); }
         .admin-content { padding: 25px 20px; max-width: 800px; margin: 0 auto; }
         .form-group { background: var(--surface); padding: 25px; border-radius: var(--radius-lg); border: 1px solid var(--border); margin-bottom: 25px; box-shadow: var(--shadow-md); }
@@ -149,9 +120,7 @@
         .inp:focus { outline: none; border-color: var(--primary); background: var(--surface); box-shadow: 0 0 0 4px var(--primary-light); }
         
         .btn-add { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: 800; width: 100%; cursor: pointer; font-size: 1rem; transition: all 0.2s; }
-        .btn-add:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: var(--shadow-md); }
         .btn-del { background: var(--danger-bg); color: var(--danger); border: none; padding: 8px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-        .btn-del:hover { background: var(--danger); color: white; }
         
         /* RESULT CARD */
         .result-card { background: var(--surface); width: 100%; max-width: 420px; border-radius: 32px; overflow: hidden; box-shadow: var(--shadow-lg); border: none; text-align: center; margin: 40px auto 30px; }
@@ -178,21 +147,25 @@
     <div id="topicScreen">
         <header class="app-header fade-in">
             <div class="header-left">
+                <!-- Go back to First Page -->
                 <div class="nav-btn" onclick="window.history.back()"><i class="fa-solid fa-chevron-left"></i></div>
                 <div class="title-group">
                     <span class="brand-subtitle">Mock Test Series</span>
-                    <h1 class="brand-title">LOKHIPUR ITI</h1>
+                    <h1 class="brand-title">Electrician Theory</h1>
                 </div>
             </div>
             <div class="profile-pill" onclick="triggerAdmin()" title="Tap 5 times for Admin">
-                <span id="headerName" class="profile-name">Student</span>
+                <div style="display: flex; flex-direction: column; align-items: flex-end; justify-content: center;">
+                    <span id="headerName" class="profile-name">Student</span>
+                    <span id="headerRoll" style="font-size: 0.7rem; color: var(--text-sec); font-weight: 700;">Roll: N/A</span>
+                </div>
                 <img id="headPic" class="profile-img" src="">
             </div>
         </header>
 
         <div class="hero-section fade-in" style="margin-top:25px; animation-delay: 0.1s;">
             <h2 class="hero-title">Let's practice! 👋</h2>
-            <div class="hero-sub">Select a topic below to begin your test.</div>
+            <div class="hero-sub">Select a chapter below to begin your test.</div>
         </div>
         <div class="grid-container" id="topicGrid"></div>
     </div>
@@ -222,9 +195,12 @@
         <div class="result-card fade-in" id="captureArea" style="background: white;">
             <div class="res-top"><div style="font-size:4.5rem; text-shadow: 0 10px 20px rgba(0,0,0,0.2);">🏆</div></div>
             <img id="resPic" class="res-avatar" src="">
-            <h2 id="resName" style="margin:15px 0 5px; font-size:1.4rem; color:var(--text-main);">Student</h2>
-            <div style="color:var(--text-sec); font-size:0.9rem; font-weight:600; margin-bottom:15px;">Final Score</div>
+            <h2 id="resName" style="margin:15px 0 2px; font-size:1.4rem; color:var(--text-main);">Student</h2>
+            <div id="resRoll" style="display:inline-block; background:#f1f5f9; color:var(--text-sec); font-size:0.85rem; font-weight:700; padding:4px 12px; border-radius:20px; margin-bottom:15px;">Roll: N/A</div>
+            
+            <div style="color:var(--text-sec); font-size:0.9rem; font-weight:600; margin-bottom:10px;">Final Score</div>
             <div class="res-score-huge" id="resScore">0%</div>
+            
             <div class="stats-grid">
                 <div class="stat-box green"><i class="fa-solid fa-check-circle"></i><span id="resRight">0</span></div>
                 <div class="stat-box red"><i class="fa-solid fa-times-circle"></i><span id="resWrong">0</span></div>
@@ -249,7 +225,6 @@
             <button class="nav-btn" onclick="closeAdmin()"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="admin-content">
-            
             <div class="form-group">
                 <div class="form-title"><i class="fa-solid fa-folder-plus"></i> 1. Create Topic</div>
                 <input type="text" id="newTopicName" class="inp" placeholder="Topic Name (e.g., Electrician Basics)">
@@ -307,28 +282,37 @@
     <script>
         /* <DATA_START> */
         const defaultTopics =;
-        const defaultQBank = { "demo": [{t:"What is the unit of Voltage?", o:, a:1}] };
+        const defaultQBank = { "demo":, a:1}] };
         /* <DATA_END> */
 
-        // STUDENT NAME FETCHING LOGIC (Checks URL first, then LocalStorage)
+        // --- FETCHING DATA ROBUSTLY (URL + LocalStorage) ---
         const urlParams = new URLSearchParams(window.location.search);
-        let passedName = urlParams.get('name') || urlParams.get('studentName') || urlParams.get('username') || urlParams.get('iti_student_name');
-        
-        if(passedName) {
-            localStorage.setItem('iti_student_name', passedName);
-        }
+        let sName = urlParams.get('name');
+        let sRoll = urlParams.get('roll');
 
-        const name = localStorage.getItem('iti_student_name') || "Student";
-        const pic = localStorage.getItem('iti_student_pic') || `https://ui-avatars.com/api/?name=${name}&background=5b4dff&color=fff&font-size=0.5&bold=true`;
-        
+        // Agar URL mein nahi mila, toh local storage try karo
+        if (!sName) sName = localStorage.getItem('iti_student_name') || "Student";
+        if (!sRoll) sRoll = localStorage.getItem('iti_student_roll') || "N/A";
+
+        // Vapas save kar do taaki sync rahe
+        localStorage.setItem('iti_student_name', sName);
+        localStorage.setItem('iti_student_roll', sRoll);
+
+        const pic = `https://ui-avatars.com/api/?name=${encodeURIComponent(sName)}&background=5b4dff&color=fff&font-size=0.5&bold=true`;
+
         let savedScores = JSON.parse(localStorage.getItem('iti_scores')) || {};
         let topics =[], qBank = {};
 
         window.onload = () => {
-            document.getElementById('headerName').innerText = name;
+            // Screen par data lagana
+            document.getElementById('headerName').innerText = sName;
+            document.getElementById('headerRoll').innerText = "Roll: " + sRoll;
             document.getElementById('headPic').src = pic;
-            document.getElementById('resName').innerText = name;
+            
+            document.getElementById('resName').innerText = sName;
+            document.getElementById('resRoll').innerText = "Roll: " + sRoll;
             document.getElementById('resPic').src = pic;
+            
             loadData();
             renderTopics();
         };
@@ -366,7 +350,7 @@
                 a.href = URL.createObjectURL(blob);
                 a.download = "LOKHIPUR_ITI_Updated.html";
                 document.body.appendChild(a); a.click(); document.body.removeChild(a);
-                alert("File Downloaded! Please replace your old file with 'LOKHIPUR_ITI_Updated.html' to keep questions permanently.");
+                alert("File Downloaded! Please replace your old file to keep questions permanently.");
             } else { alert("Error: Could not find data markers in code."); }
         }
 
@@ -383,7 +367,7 @@
             topics.forEach(t => {
                 sel.innerHTML += `<option value="${t.id}">${t.name}</option>`;
                 list.innerHTML += `<div style="padding:15px; background:white; border-radius:12px; border:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
-                    <span style="font-weight:600; color:#0f172a;">${t.name} <span style="color:#64748b; font-size:0.85rem;">(${qBank?.length || 0} Qs)</span></span> 
+                    <span style="font-weight:600; color:#0f172a;">${t.name} <span style="color:#64748b; font-size:0.85rem;">(${qBank ? qBank.length : 0} Qs)</span></span> 
                     <button class="btn-del" onclick="deleteTopic('${t.id}')"><i class="fa-solid fa-trash"></i></button>
                 </div>`;
             });
@@ -421,9 +405,7 @@
             if(!qBank) qBank =[];
             qBank.push(newQ); saveData(); 
             
-            // Clear inputs
-            document.getElementById('qInputText').value = ""; 
-            document.getElementById('qInputImg').value = "";.forEach(id => document.getElementById(id).value = "");
+            document.getElementById('qInputText').value = ""; document.getElementById('qInputImg').value = "";.forEach(id => document.getElementById(id).value = "");
             
             alert("Question Added!"); updateAdminUI();
         }
@@ -436,12 +418,11 @@
             const grid = document.getElementById('topicGrid');
             grid.innerHTML = '';
             topics.forEach((t, i) => {
-                if(!qBank) qBank =[];
+                if(!qBank) qBank = [];
                 let c = qBank.length;
                 let lastScore = savedScores;
                 let scoreHtml = lastScore !== undefined ? `<div class="card-score">${lastScore}% Score</div>` : '';
                 
-                // Assign consistent nice gradients based on index
                 const gradients =;
                 let grad = gradients;
 
@@ -500,8 +481,7 @@
             });
 
             timer = setInterval(() => { 
-                time--; 
-                document.getElementById('timerText').innerText = time + "s"; 
+                time--; document.getElementById('timerText').innerText = time + "s"; 
                 if(time <= 10) badge.classList.add('pulse-red');
                 if(time <= 0) { clearInterval(timer); autoFail(); } 
             }, 1000);
@@ -517,8 +497,7 @@
         }
 
         function autoFail() {
-            selectedAnswer = true; 
-            document.getElementById('timerBadge').classList.remove('pulse-red');
+            selectedAnswer = true; document.getElementById('timerBadge').classList.remove('pulse-red');
             document.querySelectorAll('.option-btn').classList.add('correct');
             document.getElementById('nextBtn').style.opacity = "1"; document.getElementById('nextBtn').style.pointerEvents = "all";
             document.getElementById('nextBtn').innerHTML = (curr === activeQs.length - 1) ? "See Results <i class='fa-solid fa-arrow-right'></i>" : "Next Question <i class='fa-solid fa-arrow-right'></i>";
@@ -535,7 +514,6 @@
             document.getElementById('resWrong').innerText = activeQs.length - score;
             document.getElementById('resTotalQ').innerText = activeQs.length;
             document.getElementById('resTime').innerText = Math.floor((Date.now() - quizStartTime) / 1000)+"s";
-            
             if(window.confetti && finalScore > 50) setTimeout(() => { confetti({ particleCount: 150, spread: 80, origin: { y: 0.3 } }); }, 300);
         }
 
@@ -550,7 +528,7 @@
             html2canvas(document.getElementById('captureArea'), { scale: 2, useCORS: true, backgroundColor: "#ffffff" }).then(c => {
                 c.toBlob(b => { 
                     const f = new File(, "LOKHIPUR_ITI_Result.png", { type: "image/png" });
-                    if(navigator.share) navigator.share({ files:, title: 'My Quiz Result', text: 'Check out my score on the LOKHIPUR ITI App!' }); 
+                    if(navigator.share) navigator.share({ files:, title: 'My Quiz Result', text: `Check out my score: ${sName} (ID: ${sRoll}) on LOKHIPUR ITI App!` }); 
                     else { const a = document.createElement('a'); a.href=c.toDataURL(); a.download="LOKHIPUR_ITI_Result.png"; a.click(); } 
                 });
             });
