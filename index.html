@@ -12,6 +12,7 @@
 
     <!-- FIREBASE SDKs (Compat Version) -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script> <!-- ADDED AUTHENTICATION SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
     <style>
@@ -164,8 +165,6 @@
             position: sticky; top: 72px; 
             z-index: 40;
         }
-
-        /* Toggle Switch */
         .lb-toggle {
             background: white; border-radius: 12px; border: 1px solid #e2e8f0;
             display: flex; padding: 4px; margin-bottom: 10px;
@@ -181,37 +180,27 @@
             box-shadow: 0 2px 4px rgba(79, 70, 229, 0.3);
         }
 
-        /* Podium Section */
         .podium-container {
             display: flex; align-items: flex-end; justify-content: center;
             gap: 15px; padding: 30px 0 50px;
             background: radial-gradient(circle at center, rgba(79, 70, 229, 0.08) 0%, transparent 70%);
             min-height: 220px;
         }
-
         .podium-item {
             display: flex; flex-direction: column; align-items: center;
             position: relative; width: 90px;
         }
-
         .podium-avatar {
             width: 60px; height: 60px; border-radius: 50%;
             background-size: cover; background-position: center;
-            border: 3px solid white;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-            position: relative; z-index: 2;
-            transition: transform 0.3s;
-            background-color: #ddd;
+            border: 3px solid white; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            position: relative; z-index: 2; transition: transform 0.3s; background-color: #ddd;
         }
-
         .podium-rank {
-            position: absolute; top: -10px;
-            width: 24px; height: 24px; border-radius: 50%;
+            position: absolute; top: -10px; width: 24px; height: 24px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 0.75rem; font-weight: 800; color: white;
-            z-index: 3; border: 2px solid white;
+            font-size: 0.75rem; font-weight: 800; color: white; z-index: 3; border: 2px solid white;
         }
-
         .podium-info { text-align: center; margin-top: 12px; }
         .podium-name { font-size: 0.85rem; font-weight: 700; color: var(--text-main); display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%;}
         .podium-score { font-size: 0.75rem; font-weight: 600; color: var(--primary); background: white; padding: 2px 8px; border-radius: 10px; border: 1px solid #e2e8f0; margin-top: 4px; display: inline-block;}
@@ -219,24 +208,12 @@
         .winner { transform: translateY(-20px) scale(1.15); z-index: 5; }
         .winner .podium-avatar { border-color: #fbbf24; box-shadow: 0 0 25px rgba(251, 191, 36, 0.4); }
         .winner .podium-rank { background: #fbbf24; }
-        .winner .crown-icon {
-            position: absolute; top: -28px; font-size: 1.5rem; color: #fbbf24;
-            animation: bounce 2s infinite;
-        }
-
         .runner-up .podium-avatar { border-color: #94a3b8; }
         .runner-up .podium-rank { background: #94a3b8; }
         .third-place .podium-avatar { border-color: #b45309; }
         .third-place .podium-rank { background: #b45309; }
 
-        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-
-        /* Leaderboard List */
-        .lb-list { 
-            padding: 0 24px; 
-            padding-bottom: 200px; 
-        }
-        
+        .lb-list { padding: 0 24px; padding-bottom: 200px; }
         .lb-card {
             display: flex; align-items: center; padding: 12px 16px;
             background: white; border-radius: 16px; margin-bottom: 12px;
@@ -251,29 +228,19 @@
         .trend { font-size: 0.65rem; display: flex; align-items: center; gap: 3px; margin-top: 2px; }
         .trend.up { color: #10b981; }
         .trend.down { color: #ef4444; }
-        .trend.neutral { color: #94a3b8; }
 
-        /* Sticky User Card */
         .sticky-user-rank {
-            position: fixed; 
-            bottom: 95px; /* Above Bottom Nav (20px + ~60px height + spacing) */
-            left: 20px; right: 20px;
-            background: #1e1b4b; /* Dark Navy */
-            color: white;
-            border-radius: 20px; padding: 12px 20px;
-            display: flex; align-items: center;
-            box-shadow: 0 15px 30px -5px rgba(0,0,0,0.4);
-            z-index: 95; /* Higher than Nav */
-            animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: fixed; bottom: 95px; left: 20px; right: 20px;
+            background: #1e1b4b; color: white; border-radius: 20px; padding: 12px 20px;
+            display: flex; align-items: center; box-shadow: 0 15px 30px -5px rgba(0,0,0,0.4);
+            z-index: 95; animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid rgba(255,255,255,0.1);
         }
         .sticky-user-rank .lb-rank-num { color: rgba(255,255,255,0.7); }
         .sticky-user-rank .lb-details h4 { color: white; margin: 0 0 2px; font-size: 0.95rem; font-weight: 700; }
         .sticky-user-rank .lb-details span { color: rgba(255,255,255,0.6); font-size: 0.75rem; }
         .sticky-user-rank .lb-points { color: #fbbf24; font-weight: 800; }
-        
         @keyframes slideUp { from { transform: translateY(100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
 
         /* --- PROFILE VIEW --- */
         .profile-wrapper { position: relative; background: var(--bg-body); min-height: 100vh; }
@@ -286,12 +253,10 @@
         .btn-back-profile { 
             color: white; font-size: 1.2rem; cursor: pointer; 
             background: rgba(255,255,255,0.2); width: 40px; height: 40px; margin-top: 5px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            backdrop-filter: blur(5px);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);
         }
         .profile-main-card {
-            background: white; margin: -80px 20px 20px 20px;
-            border-radius: 24px; padding: 0 20px 25px 20px;
+            background: white; margin: -80px 20px 20px 20px; border-radius: 24px; padding: 0 20px 25px 20px;
             box-shadow: var(--shadow-float); position: relative; text-align: center;
         }
         .profile-avatar-container { position: relative; display: inline-block; margin-top: -50px; margin-bottom: 10px; }
@@ -324,68 +289,67 @@
             box-shadow: var(--shadow-card); transition: transform 0.2s; cursor: pointer;
         }
         .menu-item:active { transform: scale(0.98); background: #f8fafc; }
-        .menu-icon {
-            width: 40px; height: 40px; border-radius: 10px; background: var(--bg-body); color: var(--text-main);
-            display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
-        }
+        .menu-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--bg-body); color: var(--text-main); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
         .menu-text { flex: 1; font-weight: 600; color: var(--text-main); font-size: 0.95rem; }
         .menu-arrow { color: #cbd5e1; }
         .mi-blue { background: #eff6ff; color: var(--primary); }
         .mi-purple { background: #f5f3ff; color: #7c3aed; }
         .mi-red { background: #fef2f2; color: #ef4444; }
 
-
         /* --- FLOATING NAV --- */
-        .bottom-nav-container {
-            position: fixed; bottom: 20px; left: 0; width: 100%;
-            display: flex; justify-content: center; z-index: 100;
-        }
+        .bottom-nav-container { position: fixed; bottom: 20px; left: 0; width: 100%; display: flex; justify-content: center; z-index: 100; }
         .bottom-nav {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            padding: 12px 30px; border-radius: 30px;
-            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.15);
-            display: flex; align-items: center; gap: 35px;
-            border: 1px solid rgba(255,255,255,0.5);
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px);
+            padding: 12px 30px; border-radius: 30px; box-shadow: 0 10px 30px -5px rgba(0,0,0,0.15);
+            display: flex; align-items: center; gap: 35px; border: 1px solid rgba(255,255,255,0.5);
         }
         .nav-item { color: #94a3b8; font-size: 1.3rem; cursor: pointer; transition: 0.3s; }
         .nav-item.active { color: var(--primary); transform: translateY(-3px); }
 
-
-        /* --- POPUP MODAL --- */
+        /* --- POPUP MODAL & GOOGLE AUTH --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
-            z-index: 1000;
-            display: flex; align-items: center; justify-content: center;
+            z-index: 1000; display: flex; align-items: center; justify-content: center;
             opacity: 0; pointer-events: none; transition: opacity 0.3s;
         }
         .modal-overlay.active { opacity: 1; pointer-events: all; }
         .modal-card {
-            background: white; width: 85%; max-width: 320px;
-            padding: 30px 24px; border-radius: 24px;
-            text-align: center;
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.2);
-            transform: translateY(20px); transition: transform 0.3s;
-            display: flex; flex-direction: column;
+            background: white; width: 85%; max-width: 320px; padding: 30px 24px; border-radius: 24px;
+            text-align: center; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.2);
+            transform: translateY(20px); transition: transform 0.3s; display: flex; flex-direction: column;
         }
         .modal-overlay.active .modal-card { transform: translateY(0); }
         .input-group { margin: 15px 0 10px; text-align: left; }
         .input-label { display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-sub); margin-bottom: 8px; }
         .custom-input {
-            width: 100%; padding: 14px 16px; border: 2px solid #e2e8f0;
-            border-radius: 12px; font-size: 1rem; font-weight: 600;
+            width: 100%; padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1rem; font-weight: 600;
             color: var(--text-main); outline: none; transition: 0.2s; background: #f8fafc;
         }
         .custom-input:focus { border-color: var(--primary); background: white; }
         .btn-submit {
-            background: var(--primary); color: white; border: none;
-            width: 100%; padding: 15px; border-radius: 12px;
-            font-size: 1rem; font-weight: 700; cursor: pointer;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); margin-top: 15px;
-            transition: transform 0.1s;
+            background: var(--primary); color: white; border: none; width: 100%; padding: 15px; border-radius: 12px;
+            font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); margin-top: 15px; transition: transform 0.1s;
         }
         .btn-submit:active { transform: scale(0.96); }
+
+        /* Google Sign in UI Added */
+        .btn-google {
+            background: white; color: var(--text-main); border: 2px solid #e2e8f0;
+            width: 100%; padding: 12px; border-radius: 12px;
+            font-size: 0.95rem; font-weight: 700; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            transition: all 0.2s;
+        }
+        .btn-google:active { background: #f8fafc; transform: scale(0.98); }
+        .btn-google img { width: 22px; }
+        .auth-divider {
+            display: flex; align-items: center; text-align: center; margin: 20px 0 5px; 
+            color: var(--text-sub); font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+        }
+        .auth-divider::before, .auth-divider::after { content: ''; flex: 1; border-bottom: 1px solid #e2e8f0; }
+        .auth-divider::before { margin-right: .8em; }
+        .auth-divider::after { margin-left: .8em; }
 
     </style>
 </head>
@@ -403,13 +367,10 @@
             <div class="notification-btn"><i class="fa-regular fa-bell"></i></div>
         </header>
 
-        <!-- LIVE EXAM ALERT (Hidden by default) -->
         <div id="liveExamContainer" class="hidden">
             <div class="live-exam-card">
                 <div class="lec-content">
-                    <div class="lec-icon">
-                        <i class="fa-solid fa-stopwatch fa-beat"></i>
-                    </div>
+                    <div class="lec-icon"><i class="fa-solid fa-stopwatch fa-beat"></i></div>
                     <div class="lec-text">
                         <h4 id="examTitle">Exam Started!</h4>
                         <p>Click join to start now.</p>
@@ -438,8 +399,6 @@
         </div>
 
         <div class="modules-grid">
-            
-            <!-- ELECTRICIAN THEORY CARD (This links to your Quiz Page) -->
             <div class="module-card" onclick="openSubjectPage('second.html')">
                 <div class="mc-header">
                     <div class="mc-icon"><i class="fa-solid fa-bolt"></i></div>
@@ -450,8 +409,6 @@
                 </div>
                 <button class="btn-open">View Chapters</button>
             </div>
-
-            <!-- WORKSHOP CARD -->
             <div class="module-card" onclick="openSubjectPage('workshop.html')">
                 <div class="mc-header">
                     <div class="mc-icon icon-red"><i class="fa-solid fa-gears"></i></div>
@@ -462,8 +419,6 @@
                 </div>
                 <button class="btn-open">View Chapters</button>
             </div>
-
-            <!-- EMPLOYABILITY CARD -->
             <div class="module-card" onclick="openSubjectPage('employability.html')">
                 <div class="mc-header">
                     <div class="mc-icon icon-green"><i class="fa-solid fa-comments"></i></div>
@@ -499,20 +454,9 @@
             </div>
         </div>
 
-        <!-- PODIUM (Top 3) - Content Filled by JS -->
-        <div class="podium-container" id="podiumContainer">
-            <!-- JS injects here -->
-        </div>
-
-        <!-- LIST (Rank 4+) - Content Filled by JS -->
-        <div class="lb-list" id="lbListContainer">
-            <!-- JS injects here -->
-        </div>
-
-        <!-- STICKY USER CARD - Content Filled by JS -->
-        <div class="sticky-user-rank hidden" id="stickyUserRank">
-            <!-- JS injects here -->
-        </div>
+        <div class="podium-container" id="podiumContainer"></div>
+        <div class="lb-list" id="lbListContainer"></div>
+        <div class="sticky-user-rank hidden" id="stickyUserRank"></div>
     </div>
 
 
@@ -529,7 +473,8 @@
         </div>
         <div class="profile-main-card">
             <div class="profile-avatar-container">
-                <div class="p-avatar-img"></div>
+                <!-- User's Avatar displays here -->
+                <div class="p-avatar-img"></div> 
                 <div class="edit-badge"><i class="fa-solid fa-camera"></i></div>
             </div>
             <h2 class="profile-name" id="profileName">Student</h2>
@@ -580,7 +525,6 @@
             <div class="nav-item">
                 <i class="fa-solid fa-book-open"></i>
             </div>
-            <!-- PIE CHART ICON (Triggers Leaderboard) -->
             <div class="nav-item" id="nav-stats" onclick="switchTab('stats')">
                 <i class="fa-solid fa-trophy"></i>
             </div>
@@ -591,7 +535,7 @@
     </div>
 
     <!-- =========================
-         WELCOME / LOGIN POPUP
+         WELCOME / LOGIN POPUP 
          ========================= -->
     <div id="welcomeModal" class="modal-overlay">
         <div class="modal-card">
@@ -599,7 +543,15 @@
                 <i class="fa-solid fa-user-graduate"></i>
             </div>
             <h2 style="margin:0 0 5px; font-size:1.5rem;">Welcome!</h2>
-            <p style="margin:0 0 10px; color:var(--text-sub); font-size:0.9rem;">Enter your details to get started.</p>
+            <p style="margin:0 0 20px; color:var(--text-sub); font-size:0.9rem;">Sign in to save your progress.</p>
+            
+            <!-- GOOGLE SIGN IN BUTTON -->
+            <button class="btn-google" id="btnGoogleSignIn" onclick="signInWithGoogle()">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google">
+                Verify with Google
+            </button>
+
+            <div class="auth-divider">Or enter details</div>
             
             <div class="input-group">
                 <label class="input-label">Student Name</label>
@@ -626,21 +578,21 @@
         };
         
         let db; 
+        let auth; // Auth variable
         if(typeof firebase !== 'undefined'){
             const app = firebase.initializeApp(firebaseConfig);
             db = firebase.database();
+            auth = firebase.auth(); // Init Auth
             console.log("Firebase Connected");
         }
 
         // --- 2. GLOBAL VARIABLES ---
         let currentUserName = "Student"; 
-        const currentUserAvatar = "https://img.freepik.com/free-psd/3d-illustration-human-avatar-profile_23-2150671142.jpg";
+        const defaultAvatar = "https://img.freepik.com/free-psd/3d-illustration-human-avatar-profile_23-2150671142.jpg";
         let liveExamUrl = "";
 
-
-        // --- 3. LOGIN / POPUP LOGIC ---
+        // --- 3. LOGIN / GOOGLE AUTH LOGIC ---
         window.addEventListener('load', () => {
-            // Check Local Storage
             const storedName = localStorage.getItem('iti_student_name');
             const storedRoll = localStorage.getItem('iti_student_roll');
             
@@ -650,7 +602,6 @@
                 updateUserUI(storedName, storedRoll);
             }
 
-            // Time Greeting
             const h = new Date().getHours();
             const greet = h < 12 ? "Good Morning," : h < 18 ? "Good Afternoon," : "Good Evening,";
             document.getElementById('greetingText').textContent = greet;
@@ -658,33 +609,62 @@
             initExamListener();
         });
 
-        // --- FIX FOR DATA REFRESH ---
-        // This makes sure data updates when you come back from the second page
+        // Refresh Data Return
         window.addEventListener('pageshow', function(event) {
             const storedName = localStorage.getItem('iti_student_name');
             const storedRoll = localStorage.getItem('iti_student_roll');
-            if (storedName && storedRoll) {
-                updateUserUI(storedName, storedRoll);
-            }
+            if (storedName && storedRoll) updateUserUI(storedName, storedRoll);
         });
 
+        // --- Google Sign In Function ---
+        function signInWithGoogle() {
+            if(!auth) return alert("Firebase is loading, please wait...");
+            const provider = new firebase.auth.GoogleAuthProvider();
+            
+            auth.signInWithPopup(provider).then((result) => {
+                const user = result.user;
+                
+                // Auto-fill form and save Profile Picture URL
+                document.getElementById('modalName').value = user.displayName;
+                localStorage.setItem('iti_student_email', user.email);
+                if(user.photoURL) {
+                    localStorage.setItem('iti_student_avatar', user.photoURL);
+                }
+
+                alert(`Google Verified! Welcome ${user.displayName}.\n\nPlease type your Roll Number to complete setup.`);
+                document.getElementById('modalRoll').focus(); // Prompt for Roll number
+                
+            }).catch((error) => {
+                console.error("Auth Error:", error);
+                alert("Sign-in failed: " + error.message);
+            });
+        }
+
+        // Submit Logic (Used for both Manual & Google Flow)
         function submitLogin() {
             const name = document.getElementById('modalName').value.trim();
             const roll = document.getElementById('modalRoll').value.trim();
+            const email = localStorage.getItem('iti_student_email') || "";
+            const avatarUrl = localStorage.getItem('iti_student_avatar') || "";
             
             if(name && roll) {
                 localStorage.setItem('iti_student_name', name);
                 localStorage.setItem('iti_student_roll', roll);
                 
+                // Save fully to Database
                 if(db) {
                     db.ref('students/' + roll).set({
-                        name: name, roll: roll, joined: new Date().toLocaleString()
+                        name: name, 
+                        roll: roll, 
+                        email: email,
+                        avatar: avatarUrl,
+                        joined: new Date().toLocaleString()
                     });
                 }
                 updateUserUI(name, roll);
                 document.getElementById('welcomeModal').classList.remove('active');
             } else {
-                alert("Please enter Name and Roll Number.");
+                alert("Please ensure both Name and Roll Number are entered.");
             }
         }
 
@@ -694,8 +674,11 @@
             document.getElementById('profileName').textContent = name;
             document.getElementById('profileRoll').textContent = "ID: " + roll;
 
-            // --- LOCAL STATS CALCULATION (Connected to Quiz Page) ---
-            // This reads the 'iti_scores' key saved by the Quiz Page
+            // --- Set User Profile Picture (from Google Auth if available) ---
+            const userAvatarUrl = localStorage.getItem('iti_student_avatar') || defaultAvatar;
+            document.querySelector('.p-avatar-img').style.backgroundImage = `url('${userAvatarUrl}')`;
+
+            // Score Calc 
             const localScores = JSON.parse(localStorage.getItem('iti_scores')) || {};
             const keys = Object.keys(localScores);
             const totalTests = keys.length;
@@ -705,15 +688,17 @@
 
             document.getElementById('profileTests').textContent = totalTests;
             document.getElementById('profileAvg').textContent = avg + "%";
-            // Rank remains static or from Firebase if you want
         }
 
+        // Logout
         function logout() {
-            if(confirm("Reset details?")) {
+            if(confirm("Are you sure you want to logout?")) {
                 localStorage.removeItem('iti_student_name');
                 localStorage.removeItem('iti_student_roll');
-                // Also clear scores if you want a full reset
+                localStorage.removeItem('iti_student_avatar');
+                localStorage.removeItem('iti_student_email');
                 localStorage.removeItem('iti_scores'); 
+                if(auth) auth.signOut(); // Sign out from Google Session
                 location.reload();
             }
         }
@@ -734,14 +719,8 @@
             });
         }
 
-        function joinLiveExam() {
-            if(liveExamUrl && liveExamUrl !== "#") window.location.href = liveExamUrl;
-            else alert("Exam link invalid.");
-        }
-
-        // --- 5. LEADERBOARD (Mock Data) ---
+        // --- 5. LEADERBOARD ---
         const studentNames = ["Amit", "Priya", "Rahul", "Vikram", "Neha", "Arjun", "Sita", "Rizwan", "John", "Kavita"];
-
         function generateData(type) {
             let data = studentNames.map((name, index) => {
                 let gender = index % 2 === 0 ? 'men' : 'women';
@@ -752,11 +731,12 @@
                     trend: Math.random() > 0.5 ? 'up' : 'down', trendVal: Math.floor(Math.random()*5)+1
                 };
             });
-            // Add Self
+            // Attach Real user Avatar
+            let myAvatarUrl = localStorage.getItem('iti_student_avatar') || defaultAvatar;
             data.push({
                 name: currentUserName, section: "Sec A", 
                 score: type === 'weekly' ? 850 : 2600, 
-                avatar: currentUserAvatar, trend: 'up', trendVal: 2
+                avatar: myAvatarUrl, trend: 'up', trendVal: 2
             });
             return data.sort((a, b) => b.score - a.score);
         }
@@ -768,17 +748,14 @@
 
             podiumEl.innerHTML = ''; listEl.innerHTML = '';
 
-            // Top 3
             if(data[1]) podiumEl.innerHTML += podiumItem(2, data[1], 'runner-up');
             if(data[0]) podiumEl.innerHTML += podiumItem(1, data[0], 'winner');
             if(data[2]) podiumEl.innerHTML += podiumItem(3, data[2], 'third-place');
 
-            // List
             for(let i = 3; i < data.length; i++) {
                 listEl.innerHTML += listItem(i+1, data[i]);
             }
 
-            // Sticky Self
             let myIdx = data.findIndex(s => s.name === currentUserName);
             if(myIdx !== -1) {
                 let me = data[myIdx];
@@ -830,7 +807,6 @@
             if (tab === 'home') { dashboardView.classList.remove('hidden'); navHome.classList.add('active'); }
             else if (tab === 'profile') { 
                 profileView.classList.remove('hidden'); navProfile.classList.add('active'); 
-                // Refresh stats on profile open
                 const storedName = localStorage.getItem('iti_student_name');
                 const storedRoll = localStorage.getItem('iti_student_roll');
                 updateUserUI(storedName, storedRoll);
