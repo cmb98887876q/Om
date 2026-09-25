@@ -15,6 +15,7 @@
       --code-bg: #020617;
       --border-color: #334155;
       --error-color: #ef4444;
+      --success-color: #22c55e;
     }
 
     * {
@@ -82,14 +83,14 @@
       display: block;
     }
 
-    .error-msg {
+    .status-msg {
       display: none;
       padding: 1rem;
       background-color: rgba(239, 68, 68, 0.1);
       border: 1px solid var(--error-color);
       color: var(--error-color);
       border-radius: 6px;
-      margin-top: 0.5rem;
+      margin-top: 1rem;
       font-size: 0.9rem;
     }
 
@@ -98,6 +99,8 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
     }
 
     .copy-btn {
@@ -138,7 +141,7 @@
   <div class="container">
     <header>
       <h1>Video API Demo</h1>
-      <p>Static API Data & Responsive Video Player</p>
+      <p>Static JSON API Endpoint on GitHub Pages</p>
     </header>
 
     <!-- Video Player Section -->
@@ -147,66 +150,73 @@
       <div class="video-wrapper">
         <video id="video-player" controls preload="metadata">
           <source id="video-source" src="" type="video/mp4">
-          Browser video play nahi kar pa raha hai.
+          Your browser does not support playing this video.
         </video>
       </div>
-      <div id="video-error" class="error-msg">
-        ⚠️ <strong>video1.mp4 load nahi ho paya!</strong><br>
-        Check karein ki 'video1.mp4' file bilkul same folder me 'index.html' ke sath rakhi hai ya nahi.
-      </div>
+      <div id="status-msg" class="status-msg"></div>
     </section>
 
     <!-- API Data Section -->
     <section class="card">
       <div class="api-header">
-        <h2>Video API Object Data</h2>
-        <button class="copy-btn" id="copy-btn">Copy API Data</button>
+        <h2>Fetched API Response (`video1.json`)</h2>
+        <button class="copy-btn" id="copy-btn">Copy Video API URL</button>
       </div>
-      <pre><code id="json-display"></code></pre>
+      <pre><code id="json-display">Loading API data...</code></pre>
     </section>
 
     <footer>
-      <p>Single-file static demo • Ready for backend integration</p>
+      <p>Hosted on GitHub Pages • Static JSON API</p>
     </footer>
   </div>
 
   <script>
-    // 1. JavaScript API-style Object Data
-    const videoData = {
-      title: "Video 1",
-      file: "video1.mp4",
-      video_url: "video1.mp4"
-    };
+    // Relative path to static JSON endpoint
+    const API_ENDPOINT = './video1.json';
 
-    // 2. Set Video Source from API Object
     const player = document.getElementById('video-player');
     const source = document.getElementById('video-source');
-    const errorMsg = document.getElementById('video-error');
-
-    source.src = videoData.video_url;
-    player.load(); // Reload video with new src
-
-    // Error detection if video fails to load
-    player.addEventListener('error', () => {
-      errorMsg.style.display = 'block';
-    }, true);
-
-    // 3. Display JSON Object
     const jsonDisplay = document.getElementById('json-display');
-    jsonDisplay.textContent = JSON.stringify(videoData, null, 2);
-
-    // 4. Copy API Data Functionality
+    const statusMsg = document.getElementById('status-msg');
     const copyBtn = document.getElementById('copy-btn');
+
+    // Fetch video information dynamically from video1.json
+    async function loadVideoApi() {
+      try {
+        const response = await fetch(API_ENDPOINT);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // 1. Display JSON output in UI
+        jsonDisplay.textContent = JSON.stringify(data, null, 2);
+
+        // 2. Set video source dynamically from JSON response
+        source.src = data.video_url || data.file;
+        player.load();
+
+      } catch (err) {
+        console.error('Failed to fetch video1.json:', err);
+        jsonDisplay.textContent = '// Failed to load video1.json';
+        statusMsg.style.display = 'block';
+        statusMsg.innerHTML = `⚠️ <strong>Error fetching API data:</strong> Make sure <code>video1.json</code> exists in the same repository root directory.`;
+      }
+    }
+
+    // Copy absolute API URL (video1.json full URL) to clipboard
     copyBtn.addEventListener('click', async () => {
-      const jsonText = JSON.stringify(videoData, null, 2);
-      
+      // Get the full absolute URL for external fetch access
+      const absoluteApiUrl = new URL(API_ENDPOINT, window.location.href).href;
+
       try {
         if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(jsonText);
+          await navigator.clipboard.writeText(absoluteApiUrl);
         } else {
-          // Fallback for older browsers or file:// protocol
+          // Fallback for older browsers or non-HTTPS local environments
           const textarea = document.createElement('textarea');
-          textarea.value = jsonText;
+          textarea.value = absoluteApiUrl;
           document.body.appendChild(textarea);
           textarea.select();
           document.execCommand('copy');
@@ -214,17 +224,20 @@
         }
 
         const originalText = copyBtn.textContent;
-        copyBtn.textContent = 'Copied!';
-        copyBtn.style.backgroundColor = '#22c55e'; // Green
+        copyBtn.textContent = 'URL Copied!';
+        copyBtn.style.backgroundColor = 'var(--success-color)';
 
         setTimeout(() => {
           copyBtn.textContent = originalText;
           copyBtn.style.backgroundColor = '';
         }, 2000);
       } catch (err) {
-        alert('Copy nahi ho paya: ' + err);
+        alert('Failed to copy URL: ' + err);
       }
     });
+
+    // Initialize on page load
+    loadVideoApi();
   </script>
 
 </body>
