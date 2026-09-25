@@ -14,6 +14,7 @@
       --accent-hover: #2563eb;
       --code-bg: #020617;
       --border-color: #334155;
+      --error-color: #ef4444;
     }
 
     * {
@@ -23,7 +24,7 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: var(--bg-color);
       color: var(--text-color);
       line-height: 1.6;
@@ -65,10 +66,8 @@
     .card h2 {
       font-size: 1.25rem;
       margin-bottom: 1rem;
-      color: var(--text-color);
     }
 
-    /* Video Player Styles */
     .video-wrapper {
       position: relative;
       width: 100%;
@@ -83,7 +82,17 @@
       display: block;
     }
 
-    /* API Section Styles */
+    .error-msg {
+      display: none;
+      padding: 1rem;
+      background-color: rgba(239, 68, 68, 0.1);
+      border: 1px solid var(--error-color);
+      color: var(--error-color);
+      border-radius: 6px;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+
     .api-header {
       display: flex;
       justify-content: space-between;
@@ -112,7 +121,7 @@
       padding: 1rem;
       border-radius: 6px;
       overflow-x: auto;
-      font-family: "Courier New", Courier, monospace;
+      font-family: monospace;
       color: #38bdf8;
       font-size: 0.95rem;
     }
@@ -121,7 +130,6 @@
       text-align: center;
       color: var(--text-muted);
       font-size: 0.875rem;
-      margin-top: auto;
     }
   </style>
 </head>
@@ -135,12 +143,16 @@
 
     <!-- Video Player Section -->
     <section class="card">
-      <h2>Media Preview</h2>
+      <h2>Media Player</h2>
       <div class="video-wrapper">
         <video id="video-player" controls preload="metadata">
-          <source src="video1.mp4" type="video/mp4">
-          Your browser does not support the video tag.
+          <source id="video-source" src="" type="video/mp4">
+          Browser video play nahi kar pa raha hai.
         </video>
+      </div>
+      <div id="video-error" class="error-msg">
+        ⚠️ <strong>video1.mp4 load nahi ho paya!</strong><br>
+        Check karein ki 'video1.mp4' file bilkul same folder me 'index.html' ke sath rakhi hai ya nahi.
       </div>
     </section>
 
@@ -159,34 +171,59 @@
   </div>
 
   <script>
-    // Client-side API Data Structure
+    // 1. JavaScript API-style Object Data
     const videoData = {
       title: "Video 1",
       file: "video1.mp4",
       video_url: "video1.mp4"
     };
 
-    // Render JSON to code block
+    // 2. Set Video Source from API Object
+    const player = document.getElementById('video-player');
+    const source = document.getElementById('video-source');
+    const errorMsg = document.getElementById('video-error');
+
+    source.src = videoData.video_url;
+    player.load(); // Reload video with new src
+
+    // Error detection if video fails to load
+    player.addEventListener('error', () => {
+      errorMsg.style.display = 'block';
+    }, true);
+
+    // 3. Display JSON Object
     const jsonDisplay = document.getElementById('json-display');
     jsonDisplay.textContent = JSON.stringify(videoData, null, 2);
 
-    // Copy Button Functionality
+    // 4. Copy API Data Functionality
     const copyBtn = document.getElementById('copy-btn');
-    copyBtn.addEventListener('click', () => {
+    copyBtn.addEventListener('click', async () => {
       const jsonText = JSON.stringify(videoData, null, 2);
       
-      navigator.clipboard.writeText(jsonText).then(() => {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(jsonText);
+        } else {
+          // Fallback for older browsers or file:// protocol
+          const textarea = document.createElement('textarea');
+          textarea.value = jsonText;
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+        }
+
         const originalText = copyBtn.textContent;
         copyBtn.textContent = 'Copied!';
-        copyBtn.style.backgroundColor = '#22c55e'; // Success green
+        copyBtn.style.backgroundColor = '#22c55e'; // Green
 
         setTimeout(() => {
           copyBtn.textContent = originalText;
           copyBtn.style.backgroundColor = '';
         }, 2000);
-      }).catch(err => {
-        console.error('Failed to copy API data: ', err);
-      });
+      } catch (err) {
+        alert('Copy nahi ho paya: ' + err);
+      }
     });
   </script>
 
