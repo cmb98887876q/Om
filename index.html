@@ -1,189 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickShare - Upload & Share Files</title>
-    <style>
-        :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --bg: #f9fafb;
-            --card-bg: #ffffff;
-            --text: #1f2937;
-            --border: #e5e7eb;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video API Demo</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --text-color: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-color: #3b82f6;
+      --accent-hover: #2563eb;
+      --code-bg: #020617;
+      --border-color: #334155;
+    }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        .container {
-            background-color: var(--card-bg);
-            padding: 2.5rem;
-            border-radius: 1rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            width: 100%;
-            max-width: 450px;
-            text-align: center;
-        }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
 
-        h2 {
-            margin-top: 0;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
+    .container {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
 
-        p {
-            color: #6b7280;
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
+    header {
+      text-align: center;
+    }
 
-        .upload-box {
-            border: 2px dashed var(--border);
-            padding: 2rem;
-            border-radius: 0.75rem;
-            cursor: pointer;
-            transition: border-color 0.2s;
-            margin-bottom: 1.5rem;
-        }
+    header h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
 
-        .upload-box:hover {
-            border-color: var(--primary);
-        }
+    header p {
+      color: var(--text-muted);
+    }
 
-        input[type="file"] {
-            display: none;
-        }
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    }
 
-        .file-label {
-            cursor: pointer;
-            font-weight: 500;
-        }
+    .card h2 {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      color: var(--text-color);
+    }
 
-        button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.2s;
-        }
+    /* Video Player Styles */
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      background-color: #000;
+      border-radius: 6px;
+      overflow: hidden;
+    }
 
-        button:hover {
-            background-color: var(--primary-hover);
-        }
+    video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
 
-        button:disabled {
-            background-color: #9ca3af;
-            cursor: not-allowed;
-        }
+    /* API Section Styles */
+    .api-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
 
-        #result {
-            margin-top: 1.5rem;
-            display: none;
-            text-align: left;
-            background: #f3f4f6;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            word-break: break-all;
-        }
+    .copy-btn {
+      background-color: var(--accent-color);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.2s ease;
+    }
 
-        #result a {
-            color: var(--primary);
-            font-weight: 500;
-            text-decoration: none;
-        }
+    .copy-btn:hover {
+      background-color: var(--accent-hover);
+    }
 
-        #result a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    pre {
+      background-color: var(--code-bg);
+      border: 1px solid var(--border-color);
+      padding: 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-family: "Courier New", Courier, monospace;
+      color: #38bdf8;
+      font-size: 0.95rem;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      margin-top: auto;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>QuickShare</h2>
-        <p>Upload Images, Videos, or APKs instantly and get a shareable link.</p>
-        
-        <form id="uploadForm">
-            <div class="upload-box" onclick="document.getElementById('fileInput').click()">
-                <label class="file-label" id="fileLabel">📁 Choose file from device</label>
-                <input type="file" id="fileInput" required>
-            </div>
-            <button type="submit" id="uploadBtn" disabled>Upload & Get Link</button>
-        </form>
+  <div class="container">
+    <header>
+      <h1>Video API Demo</h1>
+      <p>Static API Data & Responsive Video Player</p>
+    </header>
 
-        <div id="result">
-            <strong>Shareable Link:</strong><br>
-            <a id="shareLink" href="#" target="_blank"></a>
-        </div>
-    </div>
+    <!-- Video Player Section -->
+    <section class="card">
+      <h2>Media Preview</h2>
+      <div class="video-wrapper">
+        <video id="video-player" controls preload="metadata">
+          <source src="video1.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </section>
 
-    <script>
-        const fileInput = document.getElementById('fileInput');
-        const fileLabel = document.getElementById('fileLabel');
-        const uploadBtn = document.getElementById('uploadBtn');
-        const uploadForm = document.getElementById('uploadForm');
-        const resultDiv = document.getElementById('result');
-        const shareLink = document.getElementById('shareLink');
+    <!-- API Data Section -->
+    <section class="card">
+      <div class="api-header">
+        <h2>Video API Object Data</h2>
+        <button class="copy-btn" id="copy-btn">Copy API Data</button>
+      </div>
+      <pre><code id="json-display"></code></pre>
+    </section>
 
-        // Update label text when a file is chosen
-        fileInput.addEventListener('change', () => {
-            if (fileInput.files.length > 0) {
-                fileLabel.textContent = `Selected: ${fileInput.files[0].name}`;
-                uploadBtn.disabled = false;
-            }
-        });
+    <footer>
+      <p>Single-file static demo • Ready for backend integration</p>
+    </footer>
+  </div>
 
-        // Handle form submission
-        uploadForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formData = new FormData();
-            formData.append('file', fileInput.files[0]);
+  <script>
+    // Client-side API Data Structure
+    const videoData = {
+      title: "Video 1",
+      file: "video1.mp4",
+      video_url: "video1.mp4"
+    };
 
-            uploadBtn.textContent = 'Uploading...';
-            uploadBtn.disabled = true;
+    // Render JSON to code block
+    const jsonDisplay = document.getElementById('json-display');
+    jsonDisplay.textContent = JSON.stringify(videoData, null, 2);
 
-            try {
-                // Change '/upload' to match your backend endpoint URL
-                const response = await fetch('/upload', {
-                    method: 'POST',
-                    body: formData
-                });
+    // Copy Button Functionality
+    const copyBtn = document.getElementById('copy-btn');
+    copyBtn.addEventListener('click', () => {
+      const jsonText = JSON.stringify(videoData, null, 2);
+      
+      navigator.clipboard.writeText(jsonText).then(() => {
+        const originalText = copyBtn.textContent;
+        copyBtn.textContent = 'Copied!';
+        copyBtn.style.backgroundColor = '#22c55e'; // Success green
 
-                const data = await response.json();
+        setTimeout(() => {
+          copyBtn.textContent = originalText;
+          copyBtn.style.backgroundColor = '';
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy API data: ', err);
+      });
+    });
+  </script>
 
-                if (response.ok) {
-                    resultDiv.style.display = 'block';
-                    shareLink.href = data.url;
-                    shareLink.textContent = data.url;
-                    uploadBtn.textContent = 'Upload Success!';
-                } else {
-                    alert(data.message || 'Upload failed.');
-                    uploadBtn.textContent = 'Upload & Get Link';
-                    uploadBtn.disabled = false;
-                }
-            } catch (err) {
-                console.error(err);
-                alert('An error occurred during upload.');
-                uploadBtn.textContent = 'Upload & Get Link';
-                uploadBtn.disabled = false;
-            }
-        });
-    </script>
 </body>
 </html>
