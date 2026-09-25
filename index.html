@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GitHub Pages Video Host</title>
+  <title>GitHub Pages Video Feed</title>
   <style>
     :root {
       --bg-color: #0d1117;
@@ -23,20 +23,19 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg-color);
       color: var(--text-color);
       line-height: 1.5;
       padding: 2rem 1rem;
       display: flex;
       justify-content: center;
-      align-items: center;
       min-height: 100vh;
     }
 
     .container {
       width: 100%;
-      max-width: 720px;
+      max-width: 680px;
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
@@ -57,10 +56,11 @@
       color: #8b949e;
     }
 
+    /* Feed Sharing Card */
     .card {
       background-color: var(--card-bg);
       border: 1px solid var(--border-color);
-      border-radius: 6px;
+      border-radius: 8px;
       padding: 1.25rem;
     }
 
@@ -70,26 +70,9 @@
       margin-bottom: 0.75rem;
     }
 
-    /* Video Player */
-    .video-container {
-      width: 100%;
-      background-color: #000;
-      border-radius: 6px;
-      overflow: hidden;
-      border: 1px solid var(--border-color);
-    }
-
-    video {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    /* URL Box & Button */
     .url-box {
       display: flex;
       gap: 0.5rem;
-      margin-bottom: 1rem;
     }
 
     input[type="text"] {
@@ -119,22 +102,59 @@
       background-color: var(--accent-hover);
     }
 
-    /* Code Embed Example */
-    pre {
-      background-color: var(--code-bg);
+    /* Video Feed Container */
+    .feed-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .video-card {
+      background-color: var(--card-bg);
       border: 1px solid var(--border-color);
-      padding: 1rem;
-      border-radius: 6px;
-      overflow-x: auto;
-      font-family: monospace;
-      color: #79c0ff;
-      font-size: 0.85rem;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .video-card h3 {
+      font-size: 1.1rem;
+      color: var(--text-heading);
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      background-color: #000;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+    }
+
+    /* Empty/Error State */
+    .status-msg {
+      text-align: center;
+      padding: 2rem;
+      color: #8b949e;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
     }
 
     footer {
       text-align: center;
       font-size: 0.85rem;
       color: #8b949e;
+      margin-top: 1rem;
     }
   </style>
 </head>
@@ -142,35 +162,26 @@
 
   <div class="container">
     <header>
-      <h1>GitHub Pages Video Hosting</h1>
-      <p>Direct MP4 Streaming URL</p>
+      <h1>GitHub Pages Video Feed</h1>
+      <p>Scrollable Multi-Video Stream via JSON Feed</p>
     </header>
 
-    <!-- Video Preview Card -->
+    <!-- Public Feed URL Card -->
     <section class="card">
-      <h2>Video Preview</h2>
-      <div class="video-container">
-        <video id="player" controls preload="metadata">
-          <source id="video-source" src="video1.mp4" type="video/mp4">
-          Your browser does not support HTML5 video playback.
-        </video>
-      </div>
-    </section>
-
-    <!-- Direct URL Card -->
-    <section class="card">
-      <h2>Direct Video URL</h2>
+      <h2>Public Feed JSON URL</h2>
       <div class="url-box">
-        <input type="text" id="video-url-input" readonly>
-        <button id="copy-btn">Copy Video URL</button>
+        <input type="text" id="feed-url-input" readonly>
+        <button id="copy-btn">Copy Feed URL</button>
       </div>
-
-      <h2>Embed Code (For External Websites)</h2>
-      <pre><code id="embed-code"></code></pre>
     </section>
+
+    <!-- Scrollable Feed Section -->
+    <main id="video-feed" class="feed-container">
+      <div class="status-msg" id="status-msg">Loading videos feed...</div>
+    </main>
 
     <footer>
-      Hosted via GitHub Pages • Public Direct Access
+      Hosted via GitHub Pages • Public Direct Video Feed
     </footer>
   </div>
 
@@ -180,30 +191,26 @@
     // -------------------------------------------------------------
     const GITHUB_USERNAME = "YOUR-USERNAME";
     const GITHUB_REPO = "YOUR-REPOSITORY";
-    const VIDEO_FILENAME = "video1.mp4";
+    const FEED_FILENAME = "videos.json";
 
-    // Build the Direct URL format: https://YOUR-USERNAME.github.io/YOUR-REPOSITORY/video1.mp4
-    let directVideoUrl = `https://${GITHUB_USERNAME}.github.io/${GITHUB_REPO}/${VIDEO_FILENAME}`;
+    // Build Public Feed URL: https://YOUR-USERNAME.github.io/YOUR-REPOSITORY/videos.json
+    let feedUrl = `https://${GITHUB_USERNAME}.github.io/${GITHUB_REPO}/${FEED_FILENAME}`;
 
-    // If viewing directly on GitHub Pages, auto-detect the current URL
+    // Auto-detect current host when deployed on GitHub Pages
     if (window.location.hostname.endsWith('github.io')) {
       const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-      directVideoUrl = baseUrl + VIDEO_FILENAME;
+      feedUrl = baseUrl + FEED_FILENAME;
     }
 
-    // Populate Input Box
-    const urlInput = document.getElementById('video-url-input');
-    urlInput.value = directVideoUrl;
+    // Populate Feed URL Input
+    const feedInput = document.getElementById('feed-url-input');
+    feedInput.value = feedUrl;
 
-    // Populate Embed Code Box
-    const embedCode = document.getElementById('embed-code');
-    embedCode.textContent = `<video controls width="100%">\n  <source src="${directVideoUrl}" type="video/mp4">\n</video>`;
-
-    // Copy Button Functionality
+    // Copy Feed URL Button
     const copyBtn = document.getElementById('copy-btn');
     copyBtn.addEventListener('click', async () => {
       try {
-        await navigator.clipboard.writeText(directVideoUrl);
+        await navigator.clipboard.writeText(feedUrl);
         const originalText = copyBtn.textContent;
         copyBtn.textContent = "Copied!";
         copyBtn.style.backgroundColor = "#1f6feb";
@@ -213,12 +220,102 @@
           copyBtn.style.backgroundColor = "";
         }, 2000);
       } catch (err) {
-        // Fallback for older browser compatibility
-        urlInput.select();
+        feedInput.select();
         document.execCommand('copy');
-        alert("URL copied to clipboard!");
+        alert("Feed URL copied to clipboard!");
       }
     });
+
+    // Fetch and render videos feed
+    const feedContainer = document.getElementById('video-feed');
+    const statusMsg = document.getElementById('status-msg');
+
+    async function loadVideoFeed() {
+      try {
+        const response = await fetch('videos.json');
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        
+        const data = await response.json();
+
+        if (!data.videos || data.videos.length === 0) {
+          statusMsg.textContent = "No videos found in feed.";
+          return;
+        }
+
+        // Clear loading state
+        feedContainer.innerHTML = '';
+
+        // Render each video
+        data.videos.forEach((item, index) => {
+          const videoCard = document.createElement('article');
+          videoCard.className = 'video-card';
+
+          // Resolve full video URL if relative path is provided
+          const resolvedVideoUrl = item.video_url.startsWith('http') 
+            ? item.video_url 
+            : new URL(item.video_url, window.location.href).href;
+
+          videoCard.innerHTML = `
+            <h3>${item.title || `Video ${index + 1}`}</h3>
+            <div class="video-wrapper">
+              <video 
+                controls 
+                muted
+                playsinline
+                preload="none" 
+                data-src="${resolvedVideoUrl}">
+                Your browser does not support playing this video.
+              </video>
+            </div>
+          `;
+
+          feedContainer.appendChild(videoCard);
+        });
+
+        // Setup Intersection Observer for lazy loading and auto-play/pause
+        setupIntersectionObserver();
+
+      } catch (error) {
+        console.error("Error loading videos.json:", error);
+        statusMsg.textContent = "Failed to load videos.json. Check file path and browser console.";
+      }
+    }
+
+    function setupIntersectionObserver() {
+      const videos = document.querySelectorAll('video');
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const video = entry.target;
+
+          if (entry.isIntersecting) {
+            // Lazy load source URL if not yet loaded
+            if (!video.src) {
+              video.src = video.dataset.src;
+              video.load();
+            }
+
+            // Auto-play visible video
+            video.play().catch(err => {
+              // Autoplay might require user gesture if unmuted
+              console.log("Autoplay prevented or waiting for interaction:", err);
+            });
+          } else {
+            // Pause when leaving viewport
+            if (!video.paused) {
+              video.pause();
+            }
+          }
+        });
+      }, {
+        threshold: 0.6 // Video must be 60% visible to trigger autoplay
+      });
+
+      videos.forEach(video => observer.observe(video));
+    }
+
+    // Initialize Feed
+    loadVideoFeed();
   </script>
 </body>
 </html>
