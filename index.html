@@ -1,321 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GitHub Pages Video Feed</title>
-  <style>
-    :root {
-      --bg-color: #0d1117;
-      --card-bg: #161b22;
-      --border-color: #30363d;
-      --text-color: #c9d1d9;
-      --text-heading: #f0f6fc;
-      --accent-color: #238636;
-      --accent-hover: #2ea043;
-      --code-bg: #010409;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      line-height: 1.5;
-      padding: 2rem 1rem;
-      display: flex;
-      justify-content: center;
-      min-height: 100vh;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 680px;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    header {
-      text-align: center;
-    }
-
-    header h1 {
-      color: var(--text-heading);
-      font-size: 1.75rem;
-      margin-bottom: 0.5rem;
-    }
-
-    header p {
-      font-size: 0.95rem;
-      color: #8b949e;
-    }
-
-    /* Feed Sharing Card */
-    .card {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 1.25rem;
-    }
-
-    .card h2 {
-      font-size: 1.1rem;
-      color: var(--text-heading);
-      margin-bottom: 0.75rem;
-    }
-
-    .url-box {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    input[type="text"] {
-      flex: 1;
-      background-color: var(--code-bg);
-      border: 1px solid var(--border-color);
-      color: #58a6ff;
-      padding: 0.6rem 0.8rem;
-      border-radius: 6px;
-      font-family: monospace;
-      font-size: 0.9rem;
-    }
-
-    button {
-      background-color: var(--accent-color);
-      color: #ffffff;
-      border: none;
-      padding: 0.6rem 1rem;
-      border-radius: 6px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-      white-space: nowrap;
-    }
-
-    button:hover {
-      background-color: var(--accent-hover);
-    }
-
-    /* Video Feed Container */
-    .feed-container {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-    }
-
-    .video-card {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .video-card h3 {
-      font-size: 1.1rem;
-      color: var(--text-heading);
-      padding: 1rem 1.25rem;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .video-wrapper {
-      position: relative;
-      width: 100%;
-      background-color: #000;
-      aspect-ratio: 16 / 9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    video {
-      width: 100%;
-      height: 100%;
-      display: block;
-      object-fit: contain;
-    }
-
-    /* Empty/Error State */
-    .status-msg {
-      text-align: center;
-      padding: 2rem;
-      color: #8b949e;
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-    }
-
-    footer {
-      text-align: center;
-      font-size: 0.85rem;
-      color: #8b949e;
-      margin-top: 1rem;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Testing Dashboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <div class="container">
-    <header>
-      <h1>GitHub Pages Video Feed</h1>
-      <p>Scrollable Multi-Video Stream via JSON Feed</p>
+    <header class="navbar">
+        <div class="nav-brand">SecureTest Hub</div>
+        <div class="server-badge" id="serverBadge">Checking Server...</div>
     </header>
 
-    <!-- Public Feed URL Card -->
-    <section class="card">
-      <h2>Public Feed JSON URL</h2>
-      <div class="url-box">
-        <input type="text" id="feed-url-input" readonly>
-        <button id="copy-btn">Copy Feed URL</button>
-      </div>
-    </section>
+    <main class="dashboard-container">
+        <!-- Control Panel Section -->
+        <section class="card control-panel">
+            <h2>API Endpoint Controls</h2>
+            <p class="section-desc">Test frontend-to-backend communication, security boundaries, and validation.</p>
+            
+            <div class="button-group">
+                <button id="btnHealth" class="btn primary">GET /api/health</button>
+                <button id="btnTest" class="btn primary">GET /api/test</button>
+                <button id="btnEcho" class="btn secondary">POST /api/echo</button>
+                <button id="btnPrivate" class="btn warning">GET /api/private (Secured)</button>
+                <button id="btnPrivateFail" class="btn danger">GET /api/private (Unauthorized)</button>
+                <button id="btnStaticCheck" class="btn danger">GET /server.js (Security Check)</button>
+            </div>
 
-    <!-- Scrollable Feed Section -->
-    <main id="video-feed" class="feed-container">
-      <div class="status-msg" id="status-msg">Loading videos feed...</div>
+            <div class="input-simulation-box" id="echoFormContainer" style="display: none;">
+                <h3>Test Payload for Echo</h3>
+                <div class="form-group">
+                    <label for="inputName">Name:</label>
+                    <input type="text" id="inputName" placeholder="e.g. Alice" maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label for="inputMessage">Message:</label>
+                    <input type="text" id="inputMessage" placeholder="e.g. Hello backend!" maxlength="500">
+                </div>
+                <button id="btnSendEcho" class="btn success">Send Echo Request</button>
+                <button id="btnCancelEcho" class="btn muted">Cancel</button>
+            </div>
+        </section>
+
+        <!-- Response Panel Section -->
+        <section class="card response-panel">
+            <div class="panel-header">
+                <h2>Response Output</h2>
+                <div class="status-indicator">
+                    <span id="statusCodeBadge" class="status-badge na">Status: N/A</span>
+                    <span id="durationBadge" class="duration-badge">-- ms</span>
+                </div>
+            </div>
+            
+            <div class="response-content-wrapper">
+                <div id="loadingIndicator" class="loading-spinner" style="display: none;"></div>
+                <pre id="responseOutput">Click any endpoint button above to inspect server responses...</pre>
+            </div>
+        </section>
+
+        <!-- Request History Section -->
+        <section class="card history-panel">
+            <div class="panel-header">
+                <h2>Request History</h2>
+                <button id="btnClearHistory" class="btn small muted">Clear History</button>
+            </div>
+            <div class="table-container">
+                <table id="historyTable">
+                    <thead>
+                        <tr>
+                            <th>Endpoint</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyBody">
+                        <tr class="empty-row">
+                            <td colspan="4">No requests recorded yet.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </main>
 
-    <footer>
-      Hosted via GitHub Pages • Public Direct Video Feed
+    <footer class="footer">
+        <p>&copy; 2026 Secure Testing Website. Built with Node.js, Express, and Vanilla JavaScript.</p>
     </footer>
-  </div>
 
-  <script>
-    // -------------------------------------------------------------
-    // SETUP: Set your GitHub details here
-    // -------------------------------------------------------------
-    const GITHUB_USERNAME = "YOUR-USERNAME";
-    const GITHUB_REPO = "YOUR-REPOSITORY";
-    const FEED_FILENAME = "videos.json";
-
-    // Build Public Feed URL: https://YOUR-USERNAME.github.io/YOUR-REPOSITORY/videos.json
-    let feedUrl = `https://${GITHUB_USERNAME}.github.io/${GITHUB_REPO}/${FEED_FILENAME}`;
-
-    // Auto-detect current host when deployed on GitHub Pages
-    if (window.location.hostname.endsWith('github.io')) {
-      const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
-      feedUrl = baseUrl + FEED_FILENAME;
-    }
-
-    // Populate Feed URL Input
-    const feedInput = document.getElementById('feed-url-input');
-    feedInput.value = feedUrl;
-
-    // Copy Feed URL Button
-    const copyBtn = document.getElementById('copy-btn');
-    copyBtn.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(feedUrl);
-        const originalText = copyBtn.textContent;
-        copyBtn.textContent = "Copied!";
-        copyBtn.style.backgroundColor = "#1f6feb";
-
-        setTimeout(() => {
-          copyBtn.textContent = originalText;
-          copyBtn.style.backgroundColor = "";
-        }, 2000);
-      } catch (err) {
-        feedInput.select();
-        document.execCommand('copy');
-        alert("Feed URL copied to clipboard!");
-      }
-    });
-
-    // Fetch and render videos feed
-    const feedContainer = document.getElementById('video-feed');
-    const statusMsg = document.getElementById('status-msg');
-
-    async function loadVideoFeed() {
-      try {
-        const response = await fetch('videos.json');
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        
-        const data = await response.json();
-
-        if (!data.videos || data.videos.length === 0) {
-          statusMsg.textContent = "No videos found in feed.";
-          return;
-        }
-
-        // Clear loading state
-        feedContainer.innerHTML = '';
-
-        // Render each video
-        data.videos.forEach((item, index) => {
-          const videoCard = document.createElement('article');
-          videoCard.className = 'video-card';
-
-          // Resolve full video URL if relative path is provided
-          const resolvedVideoUrl = item.video_url.startsWith('http') 
-            ? item.video_url 
-            : new URL(item.video_url, window.location.href).href;
-
-          videoCard.innerHTML = `
-            <h3>${item.title || `Video ${index + 1}`}</h3>
-            <div class="video-wrapper">
-              <video 
-                controls 
-                muted
-                playsinline
-                preload="none" 
-                data-src="${resolvedVideoUrl}">
-                Your browser does not support playing this video.
-              </video>
-            </div>
-          `;
-
-          feedContainer.appendChild(videoCard);
-        });
-
-        // Setup Intersection Observer for lazy loading and auto-play/pause
-        setupIntersectionObserver();
-
-      } catch (error) {
-        console.error("Error loading videos.json:", error);
-        statusMsg.textContent = "Failed to load videos.json. Check file path and browser console.";
-      }
-    }
-
-    function setupIntersectionObserver() {
-      const videos = document.querySelectorAll('video');
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          const video = entry.target;
-
-          if (entry.isIntersecting) {
-            // Lazy load source URL if not yet loaded
-            if (!video.src) {
-              video.src = video.dataset.src;
-              video.load();
-            }
-
-            // Auto-play visible video
-            video.play().catch(err => {
-              // Autoplay might require user gesture if unmuted
-              console.log("Autoplay prevented or waiting for interaction:", err);
-            });
-          } else {
-            // Pause when leaving viewport
-            if (!video.paused) {
-              video.pause();
-            }
-          }
-        });
-      }, {
-        threshold: 0.6 // Video must be 60% visible to trigger autoplay
-      });
-
-      videos.forEach(video => observer.observe(video));
-    }
-
-    // Initialize Feed
-    loadVideoFeed();
-  </script>
+    <script src="script.js"></script>
 </body>
-</html>
+  </html>
+  
