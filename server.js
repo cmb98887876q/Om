@@ -41,7 +41,7 @@ app.use(errorHandler);
 // Start server
 if (require.main === module) {
   app.listen(PORT, () => {
-    console.log(`Server is running securely on http://localhost:${PORT}`);
+    console.log(`Server is running securely on https://cmb98887876q.github:${PORT}`);
   });
 }
 
